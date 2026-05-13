@@ -1,0 +1,1666 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sabaidee — Marketing Team</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d0d00;--bg2:#141400;--bg3:#1a1a00;--bg4:#222200;
+  --border:rgba(255,215,0,0.10);--border2:rgba(255,215,0,0.28);
+  --text:#fff8dc;--text2:#c8b840;--text3:#6b5e10;
+  --accent:#f5c000;--accent2:#d4a000;
+  --green:#22d3a5;--green-dim:rgba(34,211,165,0.12);
+  --amber:#f5a623;--amber-dim:rgba(245,166,35,0.12);
+  --red:#f05252;--red-dim:rgba(240,82,82,0.12);
+  --blue:#4d8ff8;--blue-dim:rgba(77,143,248,0.12);
+  --purple:#a78bfa;--purple-dim:rgba(167,139,250,0.12);
+  --teal:#14b8a6;--teal-dim:rgba(20,184,166,0.12);
+  --pink:#ec4899;--pink-dim:rgba(236,72,153,0.12);
+  --orange:#f97316;--orange-dim:rgba(249,115,22,0.12);
+  --font-lao:'Noto Sans Lao',sans-serif;
+  --font-mono:'Space Mono',monospace;
+  --font-jakarta:'Plus Jakarta Sans',sans-serif;
+  --radius:12px;--radius-sm:8px;--tr:0.18s ease;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-lao);font-size:14px;line-height:1.6;min-height:100vh;overflow-x:hidden}
+
+/* ─── LOGIN SCREEN ─── */
+#login-screen{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0}
+.login-box{background:var(--bg2);border:1px solid var(--border2);border-radius:20px;padding:48px 44px;width:420px;max-width:95vw;box-shadow:0 32px 80px rgba(0,0,0,0.5)}
+.login-logo{display:flex;align-items:center;gap:14px;margin-bottom:32px}
+.login-logo-icon{width:48px;height:48px;background:var(--accent);border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-weight:700;font-size:18px;color:#0d0d00}
+.login-logo-text{font-size:20px;font-weight:700;font-family:var(--font-jakarta)}
+.login-logo-sub{font-size:11px;color:var(--text2);font-family:var(--font-mono)}
+.login-title{font-size:16px;font-weight:600;margin-bottom:6px}
+.login-sub{font-size:13px;color:var(--text2);margin-bottom:28px}
+.login-team-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px}
+.login-team-btn{padding:12px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--bg3);color:var(--text2);cursor:pointer;text-align:left;transition:all 0.2s;font-family:var(--font-lao);font-size:13px}
+.login-team-btn:hover{border-color:var(--border2);color:var(--text);background:var(--bg4)}
+.login-team-btn.selected{border-color:var(--accent);background:rgba(245,192,0,0.08);color:var(--text)}
+.login-team-btn .team-name{font-weight:600;font-size:13px}
+.login-team-btn .team-role{font-size:11px;color:var(--text3);margin-top:2px}
+.login-pw-wrap{position:relative;margin-bottom:16px}
+.login-pw-wrap input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:11px 14px;color:var(--text);font-size:13px;font-family:var(--font-lao);outline:none;transition:border var(--tr)}
+.login-pw-wrap input:focus{border-color:var(--accent)}
+.login-err{font-size:12px;color:var(--red);margin-bottom:12px;min-height:18px}
+.btn-login{width:100%;padding:12px;background:var(--accent);color:#0d0d00;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font-lao);transition:background var(--tr)}
+.btn-login:hover{background:var(--accent2)}
+.login-hint{font-size:11px;color:var(--text3);text-align:center;margin-top:14px}
+
+/* ─── APP LAYOUT ─── */
+#app-screen{display:none}
+.app{display:flex;min-height:100vh}
+.sidebar{width:240px;background:var(--bg2);border-right:1px solid rgba(245,192,0,0.15);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;transition:transform var(--tr);overflow-y:auto}
+.main{margin-left:240px;flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:var(--bg2);border-bottom:1px solid rgba(245,192,0,0.2);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.content{padding:24px;flex:1}
+.hamburger{display:none;background:none;border:none;color:var(--text2);font-size:20px;cursor:pointer;padding:4px 8px}
+
+/* Sidebar */
+.sidebar-logo{padding:20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0}
+.logo-icon{width:36px;height:36px;background:var(--accent);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-weight:700;font-size:14px;color:#0d0d00;flex-shrink:0}
+.logo-text{font-size:13px;font-weight:600;letter-spacing:0.5px;font-family:var(--font-jakarta)}
+.logo-sub{font-size:10px;color:var(--text2);font-family:var(--font-mono)}
+.sidebar-section{padding:12px 0}
+.sidebar-label{font-size:10px;font-weight:600;color:var(--text3);letter-spacing:1.5px;padding:8px 16px 4px;text-transform:uppercase}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 16px;cursor:pointer;transition:all var(--tr);color:var(--text2);font-size:13px;font-weight:400;position:relative;border:none;background:none;width:100%;text-align:left}
+.nav-item:hover{background:var(--bg3);color:var(--text)}
+.nav-item.active{background:rgba(245,192,0,0.10);color:var(--accent)}
+.nav-item.active::before{content:'';position:absolute;left:0;top:0;height:100%;width:2.5px;background:var(--accent)}
+.nav-icon{width:16px;height:16px;opacity:0.7;flex-shrink:0}
+.nav-item.active .nav-icon{opacity:1}
+.nav-badge{margin-left:auto;background:var(--accent);color:#0d0d00;font-size:10px;font-family:var(--font-mono);padding:1px 6px;border-radius:10px;font-weight:700}
+.nav-badge.red{background:var(--red);color:#fff}
+.sidebar-footer{margin-top:auto;padding:16px;border-top:1px solid var(--border);flex-shrink:0}
+.user-card{display:flex;align-items:center;gap:10px}
+.avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;color:#0d0d00}
+.user-name{font-size:13px;font-weight:500}
+.user-role{font-size:11px;color:var(--text2)}
+.btn-logout{background:none;border:1px solid var(--border);color:var(--text3);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;margin-top:8px;width:100%;font-family:var(--font-lao);transition:all var(--tr)}
+.btn-logout:hover{border-color:var(--red);color:var(--red)}
+
+/* Topbar */
+.topbar-title{font-size:15px;font-weight:600;font-family:var(--font-jakarta)}
+.topbar-date{font-size:12px;color:var(--text2);font-family:var(--font-mono)}
+.topbar-actions{display:flex;align-items:center;gap:8px}
+.topbar-btn{background:var(--bg3);border:1px solid var(--border);color:var(--text2);padding:7px 14px;border-radius:var(--radius-sm);font-size:12px;cursor:pointer;transition:all var(--tr);font-family:var(--font-lao);white-space:nowrap}
+.topbar-btn:hover{border-color:var(--border2);color:var(--text)}
+.topbar-btn.primary{background:var(--accent);border-color:var(--accent);color:#0d0d00;font-weight:600}
+.topbar-btn.primary:hover{background:var(--accent2)}
+.topbar-btn.danger{color:var(--red);border-color:rgba(240,82,82,0.3)}
+.topbar-btn.danger:hover{background:var(--red-dim)}
+
+/* Sections */
+.section{display:none}
+.section.active{display:block;animation:fadeIn 0.22s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+/* Cards */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.card-title{font-size:13px;font-weight:600;color:var(--text);letter-spacing:0.3px;font-family:var(--font-jakarta)}
+.card-subtitle{font-size:11px;color:var(--text2);margin-top:2px}
+
+/* Grid */
+.grid{display:grid;gap:16px}
+.grid-2{grid-template-columns:1fr 1fr}
+.grid-3{grid-template-columns:1fr 1fr 1fr}
+.grid-4{grid-template-columns:repeat(4,1fr)}
+
+/* Metric Cards */
+.metric-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;position:relative;overflow:hidden}
+.metric-card::after{content:'';position:absolute;top:0;right:0;width:60px;height:60px;border-radius:0 var(--radius) 0 60px;opacity:0.07}
+.metric-card.mc-blue::after{background:var(--blue)}
+.metric-card.mc-green::after{background:var(--green)}
+.metric-card.mc-amber::after{background:var(--amber)}
+.metric-card.mc-purple::after{background:var(--purple)}
+.metric-card.mc-teal::after{background:var(--teal)}
+.metric-card.mc-pink::after{background:var(--pink)}
+.metric-card.mc-orange::after{background:var(--orange)}
+.metric-label{font-size:11px;color:var(--text2);font-weight:500;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:8px}
+.metric-value{font-size:26px;font-weight:700;font-family:var(--font-mono);color:var(--text);line-height:1;word-break:break-all;overflow-wrap:break-word}
+.metric-sub{font-size:11px;margin-top:6px;color:var(--text3)}
+.metric-icon{position:absolute;top:18px;right:18px;opacity:0.25;font-size:20px}
+
+/* Badges */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
+.badge::before{content:'';width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.badge-done{background:var(--green-dim);color:var(--green)}.badge-done::before{background:var(--green)}
+.badge-prog{background:var(--blue-dim);color:var(--blue)}.badge-prog::before{background:var(--blue)}
+.badge-pend{background:var(--amber-dim);color:var(--amber)}.badge-pend::before{background:var(--amber)}
+.badge-rev{background:var(--purple-dim);color:var(--purple)}.badge-rev::before{background:var(--purple)}
+.badge-cancel{background:var(--red-dim);color:var(--red)}.badge-cancel::before{background:var(--red)}
+
+/* Table */
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:1px;padding:10px 14px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap}
+.data-table td{padding:12px 14px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text2);vertical-align:middle}
+.data-table tr:hover td{background:rgba(255,255,255,0.02)}
+.data-table tr:last-child td{border-bottom:none}
+.td-name{color:var(--text);font-weight:500}
+
+/* Team tags */
+.team-content{color:#4d8ff8;background:rgba(77,143,248,0.12)}
+.team-admin{color:#22d3a5;background:rgba(34,211,165,0.12)}
+.team-video{color:#f97316;background:rgba(249,115,22,0.12)}
+.team-ads{color:#a78bfa;background:rgba(167,139,250,0.12)}
+.team-design{color:#ec4899;background:rgba(236,72,153,0.12)}
+.team-booth{color:#f5a623;background:rgba(245,166,35,0.12)}
+.team-other{color:#14b8a6;background:rgba(20,184,166,0.12)}
+.team-tag{padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;letter-spacing:0.3px}
+
+/* Progress */
+.progress-wrap{height:4px;background:var(--bg4);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;border-radius:2px;transition:width 0.5s ease}
+
+/* Forms */
+.form-group{margin-bottom:14px}
+.form-label{display:block;font-size:11px;font-weight:600;color:var(--text2);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:6px}
+.form-input,.form-select,.form-textarea{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:9px 12px;color:var(--text);font-size:13px;font-family:var(--font-lao);transition:border var(--tr);outline:none}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent)}
+.form-textarea{height:90px;resize:vertical}
+.form-select option{background:var(--bg3)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+
+/* Buttons */
+.btn{padding:9px 18px;border-radius:var(--radius-sm);font-size:13px;font-weight:500;cursor:pointer;transition:all var(--tr);border:none;font-family:var(--font-lao);display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn-primary{background:var(--accent);color:#0d0d00;font-weight:700}
+.btn-primary:hover{background:var(--accent2)}
+.btn-ghost{background:transparent;color:var(--text2);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--border2);color:var(--text);background:var(--bg3)}
+.btn-danger{background:var(--red-dim);color:var(--red);border:1px solid rgba(240,82,82,0.25)}
+.btn-danger:hover{background:rgba(240,82,82,0.25)}
+.btn-success{background:var(--green-dim);color:var(--green);border:1px solid rgba(34,211,165,0.25)}
+.btn-success:hover{background:rgba(34,211,165,0.25)}
+.btn-sm{padding:5px 10px;font-size:11px}
+
+/* Task Cards */
+.task-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;transition:all var(--tr);cursor:pointer}
+.task-card:hover{border-color:var(--border2);transform:translateX(2px)}
+.task-card-header{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px}
+.task-title{font-size:13px;font-weight:500;color:var(--text)}
+.task-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.task-due{font-size:11px;color:var(--text3);font-family:var(--font-mono)}
+.task-due.overdue{color:var(--red)}
+
+/* Kanban */
+.kanban-board{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;min-height:400px}
+.kanban-col{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:14px}
+.kanban-col-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.kanban-col-title{font-size:12px;font-weight:600;letter-spacing:0.5px;font-family:var(--font-jakarta)}
+.kanban-count{background:var(--bg3);border-radius:10px;font-size:10px;font-family:var(--font-mono);padding:2px 7px;color:var(--text2)}
+.kanban-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;margin-bottom:8px;cursor:pointer;transition:all var(--tr)}
+.kanban-card:hover{border-color:var(--border2);background:var(--bg4)}
+
+/* Timeline */
+.timeline-item{display:flex;gap:12px;margin-bottom:16px}
+.timeline-dot{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0}
+.timeline-left{position:relative;width:20px;display:flex;flex-direction:column;align-items:center}
+.timeline-line{width:1px;background:var(--border);position:absolute;left:3px;top:12px;bottom:-16px}
+.timeline-content{flex:1;background:var(--bg3);border-radius:var(--radius-sm);padding:10px 12px}
+.timeline-title{font-size:13px;font-weight:500;color:var(--text)}
+.timeline-time{font-size:11px;color:var(--text3);font-family:var(--font-mono);margin-top:2px}
+
+/* Bar chart */
+.bar-chart{display:flex;align-items:flex-end;gap:6px;height:120px;padding-top:10px}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.bar-fill{width:100%;border-radius:3px 3px 0 0;transition:height 0.5s ease;min-height:2px}
+.bar-label{font-size:10px;color:var(--text3);font-family:var(--font-mono)}
+.bar-val{font-size:10px;color:var(--text2)}
+
+/* Modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:500;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex;animation:fadeIn 0.18s ease}
+.modal{background:var(--bg2);border:1px solid rgba(245,192,0,0.25);border-radius:var(--radius);padding:24px;width:580px;max-width:95vw;max-height:88vh;overflow-y:auto;animation:slideUp 0.2s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.modal-title{font-size:16px;font-weight:600;font-family:var(--font-jakarta)}
+.modal-close{background:var(--bg3);border:1px solid var(--border);color:var(--text2);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all var(--tr)}
+.modal-close:hover{border-color:var(--red);color:var(--red)}
+
+/* Task Detail Modal */
+.task-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.task-detail-field{background:var(--bg3);border-radius:8px;padding:12px}
+.task-detail-field .lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:5px;font-weight:600}
+.task-detail-field .val{font-size:13px;color:var(--text);font-weight:500}
+.task-detail-desc{background:var(--bg3);border-radius:8px;padding:14px;margin-bottom:16px}
+.task-detail-desc .lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.7px;margin-bottom:8px;font-weight:600}
+.task-detail-desc .val{font-size:13px;color:var(--text2);line-height:1.7;white-space:pre-wrap}
+
+/* Report */
+.report-preview{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:20px;font-family:var(--font-mono);font-size:11px;color:var(--text2);white-space:pre-wrap;line-height:1.8;max-height:480px;overflow-y:auto}
+
+/* Notification */
+.notification{position:fixed;top:70px;right:20px;background:var(--bg2);border:1px solid var(--accent);border-radius:var(--radius);padding:12px 18px;font-size:13px;color:var(--accent);z-index:1000;animation:slideIn 0.3s ease;display:flex;align-items:center;gap:8px;box-shadow:0 8px 32px rgba(0,0,0,0.4)}
+@keyframes slideIn{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+
+/* Empty state */
+.empty-state{text-align:center;padding:48px 20px;color:var(--text3)}
+.empty-state-icon{font-size:32px;margin-bottom:12px;opacity:0.4}
+.empty-state-text{font-size:13px}
+
+/* Section headers */
+.section-header{margin-bottom:20px}
+.section-title{font-size:18px;font-weight:700;color:var(--text);font-family:var(--font-jakarta)}
+.section-desc{font-size:13px;color:var(--text2);margin-top:4px}
+.divider{height:1px;background:var(--border);margin:20px 0}
+
+/* Util classes */
+.flex{display:flex}.items-center{align-items:center}.justify-between{justify-content:space-between}
+.flex-wrap{flex-wrap:wrap}.gap-8{gap:8px}.gap-12{gap:12px}.gap-16{gap:16px}
+.mb-8{margin-bottom:8px}.mb-12{margin-bottom:12px}.mb-16{margin-bottom:16px}.mb-20{margin-bottom:20px}
+.mt-8{margin-top:8px}.mt-12{margin-top:12px}
+.text-xs{font-size:11px}.text-muted{color:var(--text2)}.font-mono{font-family:var(--font-mono)}
+
+/* Period & Import buttons */
+.period-btn{padding:5px 14px;border-radius:20px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font-lao);transition:all 0.18s}
+.period-btn:hover{border-color:var(--border2);color:var(--text)}
+.period-btn.per-active{background:rgba(245,192,0,0.12);border-color:var(--accent);color:var(--accent)}
+.import-mode-btn{flex:1;padding:12px 14px;border-radius:8px;border:1px solid var(--border);background:var(--bg3);color:var(--text2);cursor:pointer;text-align:left;transition:all 0.18s;font-family:var(--font-lao)}
+.import-mode-btn:hover{border-color:var(--border2);color:var(--text)}
+.import-mode-btn.im-active{border-color:var(--accent);background:rgba(245,192,0,0.06);color:var(--text)}
+
+/* Read-only overlay for non-admin teams */
+.readonly-banner{background:rgba(77,143,248,0.08);border:1px solid rgba(77,143,248,0.25);border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:13px;color:var(--blue);display:flex;align-items:center;gap:10px}
+
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:#2a2500;border-radius:3px}
+
+/* Responsive */
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%);z-index:200}
+  .sidebar.open{transform:translateX(0);box-shadow:4px 0 32px rgba(0,0,0,0.5)}
+  .main{margin-left:0}
+  .hamburger{display:block}
+  .sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:150}
+  .sidebar-backdrop.open{display:block}
+}
+@media(max-width:768px){
+  .grid-4,.grid-3,.grid-2{grid-template-columns:1fr}
+  .kanban-board{grid-template-columns:1fr}
+  .form-row,.form-row-3{grid-template-columns:1fr}
+  .topbar-actions .topbar-btn:not(.primary){display:none}
+  .task-detail-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════ LOGIN SCREEN ═══════════════ -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-logo-icon">SB</div>
+      <div>
+        <div class="login-logo-text">Sabaidee</div>
+        <div class="login-logo-sub">Marketing Dashboard</div>
+      </div>
+    </div>
+    <div class="login-title">ເຂົ້າສູ່ລະບົບ</div>
+    <div class="login-sub">ເລືອກທີມ ແລະ ໃສ່ລະຫັດຜ່ານ</div>
+    <div class="login-team-grid" id="login-team-grid"></div>
+    <div class="login-pw-wrap">
+      <input type="password" id="login-pw" placeholder="ລະຫັດຜ່ານ..." onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="login-err" id="login-err"></div>
+    <button class="btn-login" onclick="doLogin()">ເຂົ້າລະບົບ</button>
+    <div class="login-hint">ລະຫັດ Admin: <b>admin123</b> · ທີມ: <b>team123</b></div>
+  </div>
+</div>
+
+<!-- Sidebar backdrop for mobile -->
+<div class="sidebar-backdrop" id="sidebar-backdrop" onclick="closeSidebar()"></div>
+
+<!-- ═══════════════ APP ═══════════════ -->
+<div id="app-screen">
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">SB</div>
+      <div>
+        <div class="logo-text">Sabaidee</div>
+        <div class="logo-sub">Marketing</div>
+      </div>
+    </div>
+    <div style="overflow-y:auto;flex:1">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Overview</div>
+        <button class="nav-item active" onclick="nav('dashboard',this)">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
+          Dashboard
+        </button>
+        <button class="nav-item" onclick="nav('kanban',this)">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="2" width="4" height="12" rx="1"/><rect x="6" y="2" width="4" height="8" rx="1"/><rect x="11" y="2" width="4" height="10" rx="1"/></svg>
+          Kanban Board
+        </button>
+        <button class="nav-item" onclick="nav('activity',this)">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="7"/><path d="M8 4v4l3 2"/></svg>
+          Activity Log
+        </button>
+      </div>
+      <div class="sidebar-section" id="sidebar-teams-section">
+        <div class="sidebar-label">ທີມ</div>
+        <!-- Dynamically built -->
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">ວຽກ</div>
+        <button class="nav-item" onclick="nav('tasks',this)">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8l3 3 6-6"/><rect x="1" y="1" width="14" height="14" rx="2"/></svg>
+          ວຽກທັງໝົດ
+          <span class="nav-badge" id="nb-pending" style="display:none">0</span>
+        </button>
+        <button class="nav-item" onclick="nav('booth',this)">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="12" height="10" rx="1"/><path d="M5 4V2M11 4V2M2 8h12"/></svg>
+          ການອອກບູດ
+        </button>
+        <button class="nav-item" onclick="nav('analytics',this)">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12l3-4 3 2 3-5 3 3"/></svg>
+          ວິເຄາະ
+        </button>
+      </div>
+      <div class="sidebar-section" id="admin-only-nav">
+        <div class="sidebar-label">ຈັດການ</div>
+        <button class="nav-item" onclick="nav('report',this)">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 2h7l3 3v10a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z"/><path d="M10 2v3h3M5 9h6M5 12h4"/></svg>
+          ບົດລາຍງານ
+        </button>
+      </div>
+    </div>
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="avatar" id="sb-avatar">A</div>
+        <div>
+          <div class="user-name" id="sb-username">Admin</div>
+          <div class="user-role" id="sb-userrole">Administrator</div>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="doLogout()">↩ ອອກຈາກລະບົບ</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:12px">
+        <button class="hamburger" onclick="toggleSidebar()">☰</button>
+        <div>
+          <div class="topbar-title" id="topbar-title">Dashboard</div>
+          <div class="topbar-date" id="topbar-date"></div>
+        </div>
+      </div>
+      <div class="topbar-actions" id="topbar-actions">
+        <!-- Admin buttons injected by JS -->
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- DASHBOARD -->
+      <div id="sec-dashboard" class="section active">
+        <div class="section-header flex items-center justify-between">
+          <div>
+            <div class="section-title">ພາບລວມ</div>
+            <div class="section-desc">ສະຫຼຸບວຽກງານທຸກທີມ</div>
+          </div>
+        </div>
+        <div class="grid grid-4 mb-16">
+          <div class="metric-card mc-blue"><div class="metric-icon">📋</div><div class="metric-label">ວຽກທັງໝົດ</div><div class="metric-value" id="dm-total">0</div><div class="metric-sub">ລາຍການ</div></div>
+          <div class="metric-card mc-green"><div class="metric-icon">✅</div><div class="metric-label">ສຳເລັດ</div><div class="metric-value" id="dm-done">0</div><div class="metric-sub" id="dm-done-pct">0%</div></div>
+          <div class="metric-card mc-amber"><div class="metric-icon">⏳</div><div class="metric-label">ກຳລັງເຮັດ</div><div class="metric-value" id="dm-prog">0</div><div class="metric-sub" style="color:var(--amber)">active</div></div>
+          <div class="metric-card mc-purple"><div class="metric-icon">👥</div><div class="metric-label">ສະມາຊິກ</div><div class="metric-value" id="dm-members">0</div><div class="metric-sub">ຄົນ</div></div>
+        </div>
+        <div class="grid grid-2 mb-16">
+          <div class="card"><div class="card-header"><div><div class="card-title">ສະຖານະວຽກ by ທີມ</div></div></div><div id="team-progress-list"></div></div>
+          <div class="card"><div class="card-header"><div class="card-title">ວຽກດ່ວນ / ໃກ້ຄົບກຳໜົດ</div></div><div id="urgent-tasks"></div></div>
+        </div>
+        <div class="grid grid-2">
+          <div class="card"><div class="card-header"><div class="card-title">ວຽກ 8 ອາທິດລ່າສຸດ</div></div><div class="bar-chart" id="bar-chart-30days"></div></div>
+          <div class="card"><div class="card-header"><div class="card-title">Activity ລ່າສຸດ</div></div><div id="dash-activity" style="max-height:220px;overflow-y:auto"></div></div>
+        </div>
+      </div>
+
+      <!-- KANBAN -->
+      <div id="sec-kanban" class="section">
+        <div class="section-header flex items-center justify-between">
+          <div><div class="section-title">Kanban Board</div><div class="section-desc">ຕິດຕາມສະຖານະວຽກ</div></div>
+          <select class="form-select" style="width:160px" id="kanban-filter-team" onchange="renderKanban()">
+            <option value="">ທຸກທີມ</option>
+          </select>
+        </div>
+        <div class="kanban-board" id="kanban-board"></div>
+      </div>
+
+      <!-- ACTIVITY -->
+      <div id="sec-activity" class="section">
+        <div class="section-header"><div class="section-title">Activity Log</div><div class="section-desc">ປະຫວັດການເຮັດວຽກ</div></div>
+        <div class="card"><div id="full-activity"></div></div>
+      </div>
+
+      <!-- TEAM PAGES (dynamic) -->
+      <div id="sec-team-content" class="section"></div>
+      <div id="sec-team-admin" class="section"></div>
+      <div id="sec-team-video" class="section"></div>
+      <div id="sec-team-ads" class="section"></div>
+      <div id="sec-team-design" class="section"></div>
+      <div id="sec-team-booth" class="section"></div>
+
+      <!-- ALL TASKS -->
+      <div id="sec-tasks" class="section">
+        <div class="section-header flex items-center justify-between">
+          <div><div class="section-title">ວຽກທັງໝົດ</div><div class="section-desc">ຄຸ້ມຄອງທຸກ task</div></div>
+          <div class="flex gap-8" id="tasks-header-btn"></div>
+        </div>
+        <div class="flex gap-8 mb-16 flex-wrap">
+          <select class="form-select" style="width:140px" id="filter-team" onchange="renderTasks()"><option value="">ທຸກທີມ</option></select>
+          <select class="form-select" style="width:140px" id="filter-status" onchange="renderTasks()">
+            <option value="">ທຸກສະຖານະ</option>
+            <option value="todo">ລໍຖ້າ</option>
+            <option value="inprogress">ກຳລັງເຮັດ</option>
+            <option value="review">ກວດສອບ</option>
+            <option value="done">ສຳເລັດ</option>
+          </select>
+          <input class="form-input" style="width:200px" placeholder="ຄົ້ນຫາ..." id="filter-search" oninput="renderTasks()">
+        </div>
+        <div class="card" style="padding:0">
+          <table class="data-table">
+            <thead><tr><th>ຊື່ວຽກ</th><th>ທີມ</th><th>ຮັບຜິດຊອບ</th><th>ສະຖານະ</th><th>ກຳໜົດ</th><th>Priority</th><th>ການດຳເນີນ</th></tr></thead>
+            <tbody id="tasks-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- BOOTH -->
+      <div id="sec-booth" class="section">
+        <div class="section-header flex items-center justify-between">
+          <div><div class="section-title">ການອອກບູດ</div><div class="section-desc">ຂໍ້ມູນງານ Event ທຸກງານ</div></div>
+          <div class="flex gap-8" id="booth-header-btn"></div>
+        </div>
+        <div class="grid grid-3 mb-16">
+          <div class="metric-card mc-teal"><div class="metric-label">ງານທັງໝົດ</div><div class="metric-value" id="booth-total">0</div></div>
+          <div class="metric-card mc-blue"><div class="metric-label">ຜູ້ຊົມລວມ</div><div class="metric-value" id="booth-visitors">0</div></div>
+          <div class="metric-card mc-green"><div class="metric-label">ລີດລວມ</div><div class="metric-value" id="booth-leads">0</div></div>
+        </div>
+        <div class="card" style="padding:0">
+          <table class="data-table">
+            <thead><tr><th>ຊື່ງານ</th><th>ສະຖານທີ່</th><th>ວັນທີ</th><th>ທີມ</th><th>ຜູ້ຮັບຜິດຊອບ</th><th>ງົບປະມານ</th><th>ຜູ້ຊົມ</th><th>ລີດ</th><th>ສະຖານະ</th><th>ການດຳເນີນ</th></tr></thead>
+            <tbody id="booth-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ANALYTICS -->
+      <div id="sec-analytics" class="section">
+        <div class="section-header flex items-center justify-between">
+          <div><div class="section-title">ວິເຄາະ</div><div class="section-desc">Performance ທຸກຊ່ອງທາງ</div></div>
+          <div class="flex gap-8" id="analytics-header-btn"></div>
+        </div>
+        <div class="grid grid-4 mb-16">
+          <div class="metric-card mc-blue"><div class="metric-label">Reach ລວມ</div><div class="metric-value" id="an-reach">0</div></div>
+          <div class="metric-card mc-green"><div class="metric-label">Engagement</div><div class="metric-value" id="an-engage">0</div></div>
+          <div class="metric-card mc-amber"><div class="metric-label">Clicks</div><div class="metric-value" id="an-clicks">0</div></div>
+          <div class="metric-card mc-purple"><div class="metric-label">Conversions</div><div class="metric-value" id="an-conv">0</div></div>
+        </div>
+        <div class="card" style="padding:0">
+          <table class="data-table">
+            <thead><tr><th>ຊ່ອງທາງ</th><th>Reach</th><th>Engagement</th><th>Clicks</th><th>Conv</th><th>ວັນທີ</th><th>ທີມ</th><th>ການດຳເນີນ</th></tr></thead>
+            <tbody id="analytic-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- REPORT (admin only) -->
+      <div id="sec-report" class="section">
+        <div class="section-header"><div class="section-title">ສ້າງບົດລາຍງານ</div><div class="section-desc">Export ຂໍ້ມູນທຸກທີມ</div></div>
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-title mb-16">ຕັ້ງຄ່າ</div>
+            <div class="form-group"><label class="form-label">ຫົວຂໍ້ລາຍງານ</label><input class="form-input" id="r-title" placeholder="ລາຍງານການຕະຫຼາດ..."></div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">ຈາກ</label><input type="date" class="form-input" id="r-from"></div>
+              <div class="form-group"><label class="form-label">ຫາ</label><input type="date" class="form-input" id="r-to"></div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">ເລືອກຂໍ້ມູນ</label>
+              <div class="flex flex-wrap gap-8" style="margin-top:6px">
+                <label class="flex items-center gap-8 text-xs"><input type="checkbox" id="r-c-tasks" checked> ວຽກ</label>
+                <label class="flex items-center gap-8 text-xs"><input type="checkbox" id="r-c-booth" checked> ບູດ</label>
+                <label class="flex items-center gap-8 text-xs"><input type="checkbox" id="r-c-analytics" checked> ວິເຄາະ</label>
+                <label class="flex items-center gap-8 text-xs"><input type="checkbox" id="r-c-members" checked> ສະມາຊິກ</label>
+              </div>
+            </div>
+            <div class="flex gap-8 flex-wrap mt-8">
+              <button class="btn btn-ghost" onclick="generateReport()">👁 Preview</button>
+              <button class="btn btn-primary" onclick="downloadTXT()">⬇ TXT</button>
+              <button class="btn btn-primary" onclick="downloadCSV()">⬇ CSV</button>
+            </div>
+          </div>
+          <div class="card"><div class="card-title mb-16">Preview</div><div class="report-preview" id="report-output">ກົດ "Preview" ເພື່ອສ້າງລາຍງານ...</div></div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </main>
+</div>
+</div><!-- /app-screen -->
+
+<!-- ═══════════════ MODALS ═══════════════ -->
+
+<!-- Task Detail -->
+<div class="modal-overlay" id="modal-task-detail">
+  <div class="modal" style="width:660px">
+    <div class="modal-header">
+      <div class="modal-title" id="td-modal-title">ລາຍລະອຽດວຽກ</div>
+      <button class="modal-close" onclick="closeModal('modal-task-detail')">✕</button>
+    </div>
+    <div id="task-detail-body"></div>
+    <div class="flex gap-8 justify-between" style="margin-top:16px;flex-wrap:wrap">
+      <div class="flex gap-8" id="td-admin-btns"></div>
+      <div class="flex gap-8">
+        <button class="btn btn-success" onclick="downloadTaskCard()">⬇ ດາວໂຫຼດ</button>
+        <button class="btn btn-ghost" onclick="closeModal('modal-task-detail')">ປິດ</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Task -->
+<div class="modal-overlay" id="modal-task">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-task-title">ເພີ່ມວຽກໃໝ່</div>
+      <button class="modal-close" onclick="closeModal('modal-task')">✕</button>
+    </div>
+    <div class="form-group"><label class="form-label">ຊື່ວຽກ *</label><input class="form-input" id="t-name" placeholder="ຊື່ວຽກ..."></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">ທີມ</label>
+        <select class="form-select" id="t-team"></select>
+      </div>
+      <div class="form-group"><label class="form-label">ຮັບຜິດຊອບ</label><input class="form-input" id="t-assignee" placeholder="ຊື່ສະມາຊິກ..."></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">ສະຖານະ</label>
+        <select class="form-select" id="t-status">
+          <option value="todo">ລໍຖ້າ</option><option value="inprogress">ກຳລັງເຮັດ</option>
+          <option value="review">ກວດສອບ</option><option value="done">ສຳເລັດ</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Priority</label>
+        <select class="form-select" id="t-priority">
+          <option value="normal">ປົກກະຕິ</option><option value="high">ດ່ວນ</option><option value="urgent">ເລັ່ງດ່ວນ</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">ວັນກຳໜົດ</label><input type="date" class="form-input" id="t-due"></div>
+      <div class="form-group"><label class="form-label">ວັນເລີ່ມ</label><input type="date" class="form-input" id="t-start"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">ປະເພດ</label>
+        <select class="form-select" id="t-type">
+          <option>Post Facebook</option><option>Post Instagram</option><option>TikTok</option><option>YouTube</option>
+          <option>Reels</option><option>Story</option><option>Ads Campaign</option><option>Video Edit</option>
+          <option>Graphic Design</option><option>Email</option><option>Report</option><option>Event</option>
+          <option>Live Stream</option><option>Blog</option><option>ອື່ນໆ</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">ລິ້ງ / URL</label><input class="form-input" id="t-link" placeholder="https://..."></div>
+    </div>
+    <div class="form-group"><label class="form-label">Platform / ຊ່ອງທາງ</label>
+      <select class="form-select" id="t-platform">
+        <option value="">— ເລືອກ —</option><option>Facebook</option><option>Instagram</option><option>TikTok</option>
+        <option>YouTube</option><option>Line OA</option><option>Google Ads</option><option>Website</option><option>ອື່ນໆ</option>
+      </select>
+    </div>
+    <div class="form-group"><label class="form-label">ລາຍລະອຽດ</label><textarea class="form-textarea" id="t-desc" placeholder="ລາຍລະອຽດ, ໂຕ, ກຳໜົດ, ເປົ້າໝາຍ..."></textarea></div>
+    <div class="form-group"><label class="form-label">ໝາຍເຫດ</label><input class="form-input" id="t-note" placeholder="ໝາຍເຫດ..."></div>
+    <div class="flex gap-8 justify-between">
+      <button class="btn btn-ghost" onclick="closeModal('modal-task')">ຍົກເລີກ</button>
+      <button class="btn btn-primary" id="task-save-btn" onclick="addTask()">ບັນທຶກ</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Member -->
+<div class="modal-overlay" id="modal-member">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-member-title">ເພີ່ມສະມາຊິກ</div>
+      <button class="modal-close" onclick="closeModal('modal-member')">✕</button>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">ຊື່ *</label><input class="form-input" id="m-name" placeholder="ຊື່ສະມາຊິກ..."></div>
+      <div class="form-group"><label class="form-label">ຕຳແໜ່ງ</label><input class="form-input" id="m-role" placeholder="Content Creator..."></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">ທີມ</label><select class="form-select" id="m-team"></select></div>
+      <div class="form-group"><label class="form-label">ເບີໂທ</label><input class="form-input" id="m-phone" placeholder="020..."></div>
+    </div>
+    <div class="form-group"><label class="form-label">ລະຫັດຜ່ານ Login</label><input class="form-input" id="m-pw" placeholder="ປ່ອຍວ່າງ = ໃຊ້ລະຫັດທີມ"></div>
+    <div class="flex gap-8 justify-between">
+      <button class="btn btn-ghost" onclick="closeModal('modal-member')">ຍົກເລີກ</button>
+      <button class="btn btn-primary" id="member-save-btn" onclick="addMember()">ບັນທຶກ</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Booth -->
+<div class="modal-overlay" id="modal-booth">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-booth-title">ເພີ່ມງານບູດ</div>
+      <button class="modal-close" onclick="closeModal('modal-booth')">✕</button>
+    </div>
+    <div class="form-group"><label class="form-label">ຊື່ງານ *</label><input class="form-input" id="b-name" placeholder="ຊື່ງານ Event..."></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">ສະຖານທີ່</label><input class="form-input" id="b-loc" placeholder="ສະຖານທີ່..."></div>
+      <div class="form-group"><label class="form-label">ຜູ້ຮັບຜິດຊອບ</label><input class="form-input" id="b-assignee" placeholder="ຊື່..."></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">ວັນທີເລີ່ມ</label><input type="date" class="form-input" id="b-date-start"></div>
+      <div class="form-group"><label class="form-label">ວັນທີສິ້ນສຸດ</label><input type="date" class="form-input" id="b-date-end"></div>
+    </div>
+    <div class="form-row-3">
+      <div class="form-group"><label class="form-label">ງົບປະມານ (ກີບ)</label><input class="form-input" id="b-budget" placeholder="0"></div>
+      <div class="form-group"><label class="form-label">ຜູ້ຊົມ</label><input class="form-input" id="b-visitors" placeholder="0"></div>
+      <div class="form-group"><label class="form-label">ລີດ</label><input class="form-input" id="b-leads" placeholder="0"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">ສະຖານະ</label>
+        <select class="form-select" id="b-status"><option value="upcoming">ຍັງບໍ່ໄດ້ຈັດ</option><option value="inprogress">ກຳລັງດຳເນີນ</option><option value="done">ສຳເລັດ</option></select>
+      </div>
+      <div class="form-group"><label class="form-label">ລິ້ງ / ຮູບ</label><input class="form-input" id="b-link" placeholder="https://..."></div>
+    </div>
+    <div class="form-group"><label class="form-label">ໝາຍເຫດ / ລາຍລະອຽດ</label><textarea class="form-textarea" id="b-note" placeholder="ລາຍລະອຽດ..."></textarea></div>
+    <div class="flex gap-8 justify-between">
+      <button class="btn btn-ghost" onclick="closeModal('modal-booth')">ຍົກເລີກ</button>
+      <button class="btn btn-primary" id="booth-save-btn" onclick="addBooth()">ບັນທຶກ</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Analytic -->
+<div class="modal-overlay" id="modal-analytic">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title">ເພີ່ມຂໍ້ມູນວິເຄາະ</div><button class="modal-close" onclick="closeModal('modal-analytic')">✕</button></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">ຊ່ອງທາງ</label>
+        <select class="form-select" id="an-source"><option>Facebook</option><option>TikTok</option><option>YouTube</option><option>Instagram</option><option>Google Ads</option><option>Line OA</option><option>Organic</option></select>
+      </div>
+      <div class="form-group"><label class="form-label">ທີມ</label><select class="form-select" id="an-team"></select></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Reach</label><input class="form-input" id="an-reach-in" placeholder="0"></div>
+      <div class="form-group"><label class="form-label">Engagement</label><input class="form-input" id="an-engage-in" placeholder="0"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Clicks</label><input class="form-input" id="an-clicks-in" placeholder="0"></div>
+      <div class="form-group"><label class="form-label">Conversions</label><input class="form-input" id="an-conv-in" placeholder="0"></div>
+    </div>
+    <div class="form-group"><label class="form-label">ວັນທີ</label><input type="date" class="form-input" id="an-date-in"></div>
+    <div class="flex gap-8 justify-between">
+      <button class="btn btn-ghost" onclick="closeModal('modal-analytic')">ຍົກເລີກ</button>
+      <button class="btn btn-primary" onclick="addAnalytic()">ບັນທຶກ</button>
+    </div>
+  </div>
+</div>
+
+<!-- Data Management -->
+<div class="modal-overlay" id="modal-data">
+  <div class="modal" style="width:620px">
+    <div class="modal-header"><div class="modal-title">🗂 ຈັດການຂໍ້ມູນ — Export / Import</div><button class="modal-close" onclick="closeModal('modal-data')">✕</button></div>
+    <div id="dm-stats-bar" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;background:var(--bg3);border-radius:10px;padding:14px;margin-bottom:20px;border:1px solid var(--border)"></div>
+    <div style="margin-bottom:20px">
+      <div style="font-size:11px;font-weight:700;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;font-family:var(--font-mono);margin-bottom:12px">📤 Export</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px" id="period-btns">
+        <button class="period-btn per-active" onclick="setPeriod('all',this)">ທັງໝົດ</button>
+        <button class="period-btn" onclick="setPeriod('today',this)">ມື້ນີ້</button>
+        <button class="period-btn" onclick="setPeriod('week',this)">7 ວັນ</button>
+        <button class="period-btn" onclick="setPeriod('month',this)">30 ວັນ</button>
+        <button class="period-btn" onclick="setPeriod('thismonth',this)">ເດືອນນີ້</button>
+        <button class="period-btn" onclick="setPeriod('custom',this)">ກຳໜົດເອງ</button>
+      </div>
+      <div id="custom-range" style="display:none;margin-bottom:12px">
+        <div class="form-row"><div><label class="form-label">ຈາກ</label><input type="date" class="form-input" id="export-from" onchange="updateExportPreview()" style="font-size:12px"></div><div><label class="form-label">ຫາ</label><input type="date" class="form-input" id="export-to" onchange="updateExportPreview()" style="font-size:12px"></div></div>
+      </div>
+      <div id="export-count-bar" style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;background:var(--bg3);border-radius:8px;padding:12px;border:1px solid var(--border);margin-bottom:12px">
+        <div style="text-align:center"><div style="font-size:16px;font-weight:700;font-family:var(--font-mono);color:var(--accent)" id="ec-tasks">0</div><div style="font-size:10px;color:var(--text2)">ວຽກ</div></div>
+        <div style="text-align:center"><div style="font-size:16px;font-weight:700;font-family:var(--font-mono);color:var(--accent)" id="ec-members">0</div><div style="font-size:10px;color:var(--text2)">ສະມາຊິກ</div></div>
+        <div style="text-align:center"><div style="font-size:16px;font-weight:700;font-family:var(--font-mono);color:var(--accent)" id="ec-booths">0</div><div style="font-size:10px;color:var(--text2)">ບູດ</div></div>
+        <div style="text-align:center"><div style="font-size:16px;font-weight:700;font-family:var(--font-mono);color:var(--accent)" id="ec-analytics">0</div><div style="font-size:10px;color:var(--text2)">Analytics</div></div>
+      </div>
+      <div id="export-period-label" style="font-size:11px;color:var(--text2);background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 12px;margin-bottom:12px;font-family:var(--font-mono)">📅 ທັງໝົດ</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <button class="btn btn-primary" onclick="exportFullDB()">⬇ Export DB ທັງໝົດ</button>
+        <button class="btn btn-ghost" onclick="exportTasksOnly()" style="color:var(--green);border-color:rgba(34,211,165,0.3)">⬇ Export ສະເພາະວຽກ</button>
+      </div>
+    </div>
+    <div style="height:1px;background:var(--border);margin-bottom:20px"></div>
+    <div>
+      <div style="font-size:11px;font-weight:700;color:var(--green);letter-spacing:1.5px;text-transform:uppercase;font-family:var(--font-mono);margin-bottom:12px">📥 Import</div>
+      <div style="display:flex;gap:8px;margin-bottom:14px">
+        <button class="import-mode-btn im-active" onclick="setImportMode('merge',this)"><div style="font-size:13px;font-weight:700;margin-bottom:2px">🔀 Merge</div><div style="font-size:11px;opacity:0.7">ຮວມ — ບໍ່ລຶບຂໍ້ມູນເດີມ</div></button>
+        <button class="import-mode-btn" onclick="setImportMode('replace',this)"><div style="font-size:13px;font-weight:700;margin-bottom:2px">🔄 Replace</div><div style="font-size:11px;opacity:0.7">ແທນຂໍ້ມູນທັງໝົດ</div></button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <button class="btn" onclick="document.getElementById('import-db-file').click()" style="background:var(--green-dim);color:var(--green);border:1px solid rgba(34,211,165,0.3)">📂 Import DB</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('import-task-file').click()">📂 Import ສະເພາະວຽກ</button>
+      </div>
+      <div id="import-preview" style="display:none;margin-top:16px">
+        <div id="import-preview-content" style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px;font-size:11px;font-family:var(--font-mono);color:var(--text2);max-height:160px;overflow-y:auto;line-height:1.8;white-space:pre-wrap"></div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button class="btn btn-ghost" onclick="cancelImport()" style="flex:1">ຍົກເລີກ</button>
+          <button class="btn btn-primary" onclick="confirmImport()" style="flex:2">✓ ຢືນຢັນ Import</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="import-task-file" accept=".json" style="display:none" onchange="importTaskJSON(this)">
+<input type="file" id="import-db-file" accept=".json" style="display:none" onchange="importDBFile(this)">
+
+<script>
+// ══════════════════════════════════════════════════════
+// CONFIG — ທີມ, ລະຫັດ, ສິດ
+// ══════════════════════════════════════════════════════
+const TEAM_CONFIG = {
+  admin:   { label:'ແອັດມິນ',       color:'#22d3a5', cls:'team-admin',   pw:'team123', canEdit:false },
+  content: { label:'ຄອນເທັ້ນ',      color:'#4d8ff8', cls:'team-content', pw:'team123', canEdit:false },
+  video:   { label:'ຕັດຕໍ່ວິດີໂອ',  color:'#f97316', cls:'team-video',   pw:'team123', canEdit:false },
+  ads:     { label:'Ads',            color:'#a78bfa', cls:'team-ads',     pw:'team123', canEdit:false },
+  design:  { label:'Design',         color:'#ec4899', cls:'team-design',  pw:'team123', canEdit:false },
+  booth:   { label:'ອອກບູດ',        color:'#f5a623', cls:'team-booth',   pw:'team123', canEdit:false },
+};
+const ADMIN_PW = 'admin123';
+
+const STATUS = {
+  todo:       { label:'ລໍຖ້າ',       cls:'badge-pend' },
+  inprogress: { label:'ກຳລັງເຮັດ',  cls:'badge-prog' },
+  review:     { label:'ກວດສອບ',      cls:'badge-rev'  },
+  done:       { label:'ສຳເລັດ',      cls:'badge-done' },
+  cancel:     { label:'ຍົກເລີກ',     cls:'badge-cancel'}
+};
+const PRIORITY = {
+  normal: { label:'ປົກກະຕິ', color:'var(--text3)' },
+  high:   { label:'ດ່ວນ',    color:'var(--amber)' },
+  urgent: { label:'ເລັ່ງດ່ວນ', color:'var(--red)' }
+};
+const BOOTH_STATUS = {
+  upcoming:   { label:'ຍັງບໍ່ໄດ້ຈັດ', cls:'badge-pend'  },
+  inprogress: { label:'ກຳລັງດຳເນີນ',  cls:'badge-prog'  },
+  done:       { label:'ສຳເລັດ',        cls:'badge-done'  }
+};
+
+// ══════════════════════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════════════════════
+let currentUser = null; // { type:'admin'|'team', team:'content'|..., name, canEdit }
+
+function buildLoginUI() {
+  const grid = document.getElementById('login-team-grid');
+  const icons = { admin:'⚙', content:'✍', video:'🎬', ads:'📢', design:'🎨', booth:'🏪' };
+  const allTeams = [
+    { key:'__admin__', label:'Admin', role:'ຈັດການທັງໝົດ' },
+    ...Object.entries(TEAM_CONFIG).map(([k,v])=>({ key:k, label:v.label, role:'ສະມາຊິກທີມ' }))
+  ];
+  grid.innerHTML = allTeams.map(t=>`
+    <button class="login-team-btn" onclick="selectLoginTeam('${t.key}',this)">
+      <div style="font-size:18px;margin-bottom:4px">${icons[t.key]||'👤'}</div>
+      <div class="team-name">${t.label}</div>
+      <div class="team-role">${t.role}</div>
+    </button>`).join('');
+}
+
+let selectedLoginTeam = null;
+function selectLoginTeam(key, el) {
+  selectedLoginTeam = key;
+  document.querySelectorAll('.login-team-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('login-err').textContent = '';
+  document.getElementById('login-pw').focus();
+}
+
+function doLogin() {
+  const pw = document.getElementById('login-pw').value;
+  const errEl = document.getElementById('login-err');
+  if (!selectedLoginTeam) { errEl.textContent = 'ກະລຸນາເລືອກທີມກ່ອນ'; return; }
+  if (selectedLoginTeam === '__admin__') {
+    if (pw !== ADMIN_PW) { errEl.textContent = 'ລະຫັດຜ່ານ Admin ບໍ່ຖືກຕ້ອງ'; return; }
+    currentUser = { type:'admin', team:'admin', name:'Admin', role:'Administrator', canEdit:true };
+  } else {
+    const tc = TEAM_CONFIG[selectedLoginTeam];
+    if (pw !== tc.pw && pw !== ADMIN_PW) { errEl.textContent = 'ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ'; return; }
+    currentUser = { type:'team', team:selectedLoginTeam, name:tc.label, role:'ສະມາຊິກ', canEdit:false };
+  }
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app-screen').style.display = 'block';
+  initApp();
+}
+
+function doLogout() {
+  if (!confirm('ອອກຈາກລະບົບ?')) return;
+  currentUser = null;
+  selectedLoginTeam = null;
+  document.getElementById('login-pw').value = '';
+  document.getElementById('login-err').textContent = '';
+  document.querySelectorAll('.login-team-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app-screen').style.display = 'none';
+}
+
+// ══════════════════════════════════════════════════════
+// DB
+// ══════════════════════════════════════════════════════
+const DB_KEY = 'sabaidee_mkt_v2';
+let db = { tasks:[], members:[], booths:[], analytics:[], activity:[] };
+
+function saveDB() { try { localStorage.setItem(DB_KEY, JSON.stringify(db)); } catch(e) {} }
+function loadDB() {
+  try {
+    const s = localStorage.getItem(DB_KEY);
+    if (s) { const p = JSON.parse(s); db.tasks=p.tasks||[]; db.members=p.members||[]; db.booths=p.booths||[]; db.analytics=p.analytics||[]; db.activity=p.activity||[]; }
+  } catch(e) {}
+}
+function addActivity(msg, team) {
+  db.activity.unshift({ msg, team:team||'other', time:new Date().toISOString() });
+  if (db.activity.length > 150) db.activity.pop();
+  saveDB();
+}
+function genId() { return Date.now() + Math.floor(Math.random()*10000); }
+
+// ══════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════
+function initApp() {
+  loadDB();
+  if (!db.tasks.length && !db.members.length) loadDemoData();
+
+  // Sidebar user info
+  document.getElementById('sb-avatar').textContent = currentUser.name.charAt(0);
+  document.getElementById('sb-username').textContent = currentUser.name;
+  document.getElementById('sb-userrole').textContent = currentUser.canEdit ? 'Administrator' : 'View Only';
+  document.getElementById('topbar-date').textContent = new Date().toLocaleDateString('lo-LA',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+  buildSidebarTeams();
+  buildTeamSelects();
+  buildTopbarActions();
+  buildAdminNav();
+  buildKanbanTeamFilter();
+  updateBadges();
+  renderDashboard();
+
+  // Focus on team page if team login
+  if (currentUser.type === 'team') {
+    nav('team-'+currentUser.team);
+    // Highlight team nav
+    document.querySelectorAll('.nav-item').forEach(b => {
+      if (b.getAttribute('onclick')?.includes("'team-"+currentUser.team+"'")) b.classList.add('active');
+    });
+  }
+}
+
+function buildSidebarTeams() {
+  const sec = document.getElementById('sidebar-teams-section');
+  const icons = { content:'✍', admin:'⚙', video:'🎬', ads:'📢', design:'🎨', booth:'🏪' };
+  sec.innerHTML = '<div class="sidebar-label">ທີມ</div>' +
+    Object.entries(TEAM_CONFIG).map(([k,v])=>`
+      <button class="nav-item" onclick="nav('team-${k}',this)">
+        <span style="font-size:13px;width:16px;text-align:center;opacity:0.7">${icons[k]||'👥'}</span>
+        ${v.label}
+        <span class="nav-badge" id="nb-${k}" style="display:none">0</span>
+      </button>`).join('');
+}
+
+function buildTeamSelects() {
+  const opts = Object.entries(TEAM_CONFIG).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('');
+  ['t-team','m-team','an-team'].forEach(id => { const el=document.getElementById(id); if(el) el.innerHTML=opts; });
+  // filter dropdowns
+  const ft = document.getElementById('filter-team');
+  if (ft) ft.innerHTML = '<option value="">ທຸກທີມ</option>' + opts;
+}
+
+function buildTopbarActions() {
+  const c = document.getElementById('topbar-actions');
+  if (currentUser.canEdit) {
+    c.innerHTML = `
+      <button class="topbar-btn" onclick="openAddMember()">+ ສະມາຊິກ</button>
+      <button class="topbar-btn primary" onclick="openAddTask()">+ ເພີ່ມວຽກ</button>
+      <button class="topbar-btn" onclick="openDataModal()" style="color:var(--green)">🗂 ຂໍ້ມູນ</button>
+      <button class="topbar-btn danger" onclick="resetDB()" title="ລ້າງ & ໂຫຼດ demo">↺</button>`;
+  } else {
+    c.innerHTML = `<span style="font-size:11px;color:var(--text3);font-family:var(--font-mono);padding:6px 10px;background:var(--bg3);border-radius:6px;border:1px solid var(--border)">👁 View Only</span>`;
+  }
+}
+
+function buildAdminNav() {
+  const el = document.getElementById('admin-only-nav');
+  if (!currentUser.canEdit) { el.style.display = 'none'; return; }
+}
+
+function buildKanbanTeamFilter() {
+  const sel = document.getElementById('kanban-filter-team');
+  if (!sel) return;
+  sel.innerHTML = '<option value="">ທຸກທີມ</option>' + Object.entries(TEAM_CONFIG).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('');
+}
+
+// ══════════════════════════════════════════════════════
+// SIDEBAR / NAV
+// ══════════════════════════════════════════════════════
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-backdrop').classList.toggle('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-backdrop').classList.remove('open');
+}
+
+function nav(page, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  const sec = document.getElementById('sec-'+page);
+  if (sec) sec.classList.add('active');
+  if (btn) btn.classList.add('active');
+  else document.querySelectorAll('.nav-item').forEach(b => { if(b.getAttribute('onclick')?.includes("'"+page+"'")) b.classList.add('active'); });
+
+  const titles = {
+    dashboard:'Dashboard', kanban:'Kanban Board', activity:'Activity Log',
+    tasks:'ວຽກທັງໝົດ', booth:'ການອອກບູດ', analytics:'ວິເຄາະ', report:'ບົດລາຍງານ',
+    ...Object.fromEntries(Object.entries(TEAM_CONFIG).map(([k,v])=>['team-'+k,'ທີມ '+v.label]))
+  };
+  document.getElementById('topbar-title').textContent = titles[page] || page;
+  closeSidebar();
+
+  if (page==='dashboard') renderDashboard();
+  else if (page==='kanban') renderKanban();
+  else if (page==='activity') renderFullActivity();
+  else if (page.startsWith('team-')) renderTeamPage(page.replace('team-',''));
+  else if (page==='tasks') { buildTasksHeaderBtn(); renderTasks(); }
+  else if (page==='booth') { buildBoothHeaderBtn(); renderBooth(); }
+  else if (page==='analytics') { buildAnalyticsHeaderBtn(); renderAnalytics(); }
+}
+
+function buildTasksHeaderBtn() {
+  const c = document.getElementById('tasks-header-btn');
+  c.innerHTML = currentUser.canEdit ? `<button class="btn btn-primary" onclick="openAddTask()">+ ເພີ່ມວຽກ</button>` : '';
+}
+function buildBoothHeaderBtn() {
+  const c = document.getElementById('booth-header-btn');
+  c.innerHTML = currentUser.canEdit ? `<button class="btn btn-primary" onclick="openBoothModal()">+ ເພີ່ມງານ</button>` : '';
+}
+function buildAnalyticsHeaderBtn() {
+  const c = document.getElementById('analytics-header-btn');
+  c.innerHTML = currentUser.canEdit ? `<button class="btn btn-primary" onclick="openModal('modal-analytic')">+ ເພີ່ມຂໍ້ມູນ</button>` : '';
+}
+
+// ══════════════════════════════════════════════════════
+// MODALS
+// ══════════════════════════════════════════════════════
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', e => { if(e.target===m) m.classList.remove('open'); });
+});
+function notify(msg, type='') {
+  const n = document.createElement('div');
+  n.className = 'notification';
+  n.style.borderColor = type==='error' ? 'var(--red)' : 'var(--accent)';
+  n.style.color = type==='error' ? 'var(--red)' : 'var(--accent)';
+  n.innerHTML = `<span>${type==='error'?'✗':'✓'}</span>${msg}`;
+  document.body.appendChild(n);
+  setTimeout(()=>n.remove(), 3000);
+}
+
+// ══════════════════════════════════════════════════════
+// TASK DETAIL MODAL
+// ══════════════════════════════════════════════════════
+let viewingTaskId = null;
+function openTaskDetail(id) {
+  const t = db.tasks.find(x=>x.id===id);
+  if (!t) return;
+  viewingTaskId = id;
+  const tc = TEAM_CONFIG[t.team] || { label:t.team, color:'var(--accent)', cls:'team-other' };
+  const st = STATUS[t.status] || STATUS.todo;
+  const pr = PRIORITY[t.priority] || PRIORITY.normal;
+  document.getElementById('td-modal-title').textContent = t.name;
+
+  document.getElementById('task-detail-body').innerHTML = `
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+      <span class="badge ${st.cls}">${st.label}</span>
+      <span class="team-tag ${tc.cls}">${tc.label}</span>
+      <span class="badge" style="background:var(--bg3);color:${pr.color}">${pr.label}</span>
+    </div>
+    <div class="task-detail-grid">
+      <div class="task-detail-field"><div class="lbl">ຮັບຜິດຊອບ</div><div class="val">${t.assignee||'-'}</div></div>
+      <div class="task-detail-field"><div class="lbl">ປະເພດ</div><div class="val">${t.type||'-'}</div></div>
+      <div class="task-detail-field"><div class="lbl">ວັນເລີ່ມ</div><div class="val font-mono">${t.start||'-'}</div></div>
+      <div class="task-detail-field"><div class="lbl">ວັນກຳໜົດ</div><div class="val font-mono" style="${t.due&&new Date(t.due)<new Date()?'color:var(--red)':''}">${t.due||'-'}</div></div>
+      <div class="task-detail-field"><div class="lbl">Platform</div><div class="val">${t.platform||'-'}</div></div>
+      <div class="task-detail-field"><div class="lbl">ສ້າງວັນທີ</div><div class="val font-mono" style="font-size:11px">${new Date(t.created).toLocaleString('lo-LA')}</div></div>
+    </div>
+    ${t.desc ? `<div class="task-detail-desc"><div class="lbl">ລາຍລະອຽດ</div><div class="val">${t.desc}</div></div>` : ''}
+    ${t.note ? `<div class="task-detail-desc"><div class="lbl">ໝາຍເຫດ</div><div class="val" style="color:var(--amber)">${t.note}</div></div>` : ''}
+    ${t.link ? `<div class="task-detail-field"><div class="lbl">ລິ້ງ</div><div class="val"><a href="${t.link}" target="_blank" style="color:var(--blue)">${t.link}</a></div></div>` : ''}
+  `;
+
+  const adminBtns = document.getElementById('td-admin-btns');
+  adminBtns.innerHTML = currentUser.canEdit ? `
+    <button class="btn btn-ghost btn-sm" onclick="openEditTask(${id});closeModal('modal-task-detail')">✎ ແກ້ໄຂ</button>
+    <button class="btn btn-danger btn-sm" onclick="deleteTaskFromDetail(${id})">✕ ລຶບ</button>` : '';
+
+  openModal('modal-task-detail');
+}
+
+function deleteTaskFromDetail(id) {
+  if (!confirm('ລຶບວຽກນີ້?')) return;
+  db.tasks = db.tasks.filter(t=>t.id!==id);
+  saveDB(); notify('ລຶບວຽກສຳເລັດ');
+  closeModal('modal-task-detail');
+  updateBadges(); renderTasks(); renderDashboard(); renderKanban();
+}
+
+// ══════════════════════════════════════════════════════
+// DOWNLOAD SINGLE TASK
+// ══════════════════════════════════════════════════════
+function downloadTaskCard() {
+  const t = db.tasks.find(x=>x.id===viewingTaskId);
+  if (!t) return;
+  const tc = TEAM_CONFIG[t.team]||{label:t.team};
+  const st = STATUS[t.status]||STATUS.todo;
+  const pr = PRIORITY[t.priority]||PRIORITY.normal;
+  const lines = [
+    '╔══════════════════════════════════════════╗',
+    `  SABAIDEE — ໃບສັ່ງວຽກ`,
+    '╚══════════════════════════════════════════╝',
+    '',
+    `ຊື່ວຽກ:        ${t.name}`,
+    `ທີມ:           ${tc.label}`,
+    `ຮັບຜິດຊອບ:     ${t.assignee||'-'}`,
+    `ສະຖານະ:       ${st.label}`,
+    `Priority:      ${pr.label}`,
+    `ປະເພດ:        ${t.type||'-'}`,
+    `Platform:      ${t.platform||'-'}`,
+    `ວັນເລີ່ມ:      ${t.start||'-'}`,
+    `ວັນກຳໜົດ:     ${t.due||'-'}`,
+    '',
+    '──────────────────────────────────────────',
+    'ລາຍລະອຽດ:',
+    t.desc || '(ຍັງບໍ່ໄດ້ໃສ່)',
+    '',
+    'ໝາຍເຫດ:',
+    t.note || '(ຍັງບໍ່ໄດ້ໃສ່)',
+    '',
+    t.link ? `ລິ້ງ: ${t.link}` : '',
+    '──────────────────────────────────────────',
+    `ສ້າງ: ${new Date(t.created).toLocaleString('lo-LA')}`,
+    `Export: ${new Date().toLocaleString('lo-LA')}`,
+  ].filter(l=>l!==undefined);
+  const fname = `task-${t.id}-${(t.name||'task').substring(0,20).replace(/[^a-zA-Z0-9\u0E80-\u0EFF]/g,'_')}.txt`;
+  downloadFile(lines.join('\n'), fname, 'text/plain;charset=utf-8');
+  notify('ດາວໂຫຼດ ①ວຽກ ສຳເລັດ');
+}
+
+// Also per-task download button in table
+function downloadSingleTask(id) {
+  viewingTaskId = id;
+  downloadTaskCard();
+}
+
+// ══════════════════════════════════════════════════════
+// ADD / EDIT TASK
+// ══════════════════════════════════════════════════════
+let editingTaskId = null;
+function openAddTask(preTeam) {
+  if (!currentUser.canEdit) { notify('ທ່ານບໍ່ມີສິດເພີ່ມວຽກ','error'); return; }
+  editingTaskId = null;
+  document.getElementById('modal-task-title').textContent = 'ເພີ່ມວຽກໃໝ່';
+  document.getElementById('task-save-btn').textContent = 'ບັນທຶກ';
+  ['t-name','t-assignee','t-desc','t-due','t-start','t-link','t-note'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('t-team').value = preTeam || Object.keys(TEAM_CONFIG)[0];
+  document.getElementById('t-status').value = 'todo';
+  document.getElementById('t-priority').value = 'normal';
+  document.getElementById('t-platform').value = '';
+  openModal('modal-task');
+}
+
+function openEditTask(id) {
+  if (!currentUser.canEdit) return;
+  const t = db.tasks.find(x=>x.id===id);
+  if (!t) return;
+  editingTaskId = id;
+  document.getElementById('modal-task-title').textContent = 'ແກ້ໄຂວຽກ';
+  document.getElementById('task-save-btn').textContent = 'ອັບເດດ';
+  document.getElementById('t-name').value = t.name;
+  document.getElementById('t-assignee').value = t.assignee==='-'?'':t.assignee;
+  document.getElementById('t-desc').value = t.desc||'';
+  document.getElementById('t-due').value = t.due||'';
+  document.getElementById('t-start').value = t.start||'';
+  document.getElementById('t-link').value = t.link||'';
+  document.getElementById('t-note').value = t.note||'';
+  document.getElementById('t-team').value = t.team;
+  document.getElementById('t-status').value = t.status;
+  document.getElementById('t-priority').value = t.priority;
+  document.getElementById('t-type').value = t.type||'Post Facebook';
+  document.getElementById('t-platform').value = t.platform||'';
+  openModal('modal-task');
+}
+
+function addTask() {
+  const name = document.getElementById('t-name').value.trim();
+  if (!name) { alert('ກະລຸນາໃສ່ຊື່ວຽກ'); return; }
+  const fields = () => ({
+    name, team:document.getElementById('t-team').value,
+    assignee:document.getElementById('t-assignee').value||'-',
+    status:document.getElementById('t-status').value,
+    priority:document.getElementById('t-priority').value,
+    due:document.getElementById('t-due').value,
+    start:document.getElementById('t-start').value,
+    type:document.getElementById('t-type').value,
+    platform:document.getElementById('t-platform').value,
+    link:document.getElementById('t-link').value,
+    desc:document.getElementById('t-desc').value,
+    note:document.getElementById('t-note').value,
+  });
+  if (editingTaskId !== null) {
+    const t = db.tasks.find(x=>x.id===editingTaskId);
+    if (t) { Object.assign(t, fields()); addActivity(`ແກ້ໄຂ "${name}"`, t.team); notify('ອັບເດດວຽກສຳເລັດ'); }
+    editingTaskId = null;
+  } else {
+    const task = { id:genId(), created:new Date().toISOString(), ...fields() };
+    db.tasks.push(task);
+    addActivity(`ເພີ່ມວຽກ "${name}"`, task.team);
+    notify('ເພີ່ມວຽກສຳເລັດ');
+  }
+  saveDB(); closeModal('modal-task');
+  updateBadges(); renderDashboard(); renderTasks(); renderKanban();
+  // re-render team page if visible
+  Object.keys(TEAM_CONFIG).forEach(k => { const s=document.getElementById('sec-team-'+k); if(s&&s.classList.contains('active')) renderTeamPage(k); });
+}
+
+function deleteTask(id) {
+  if (!currentUser.canEdit) return;
+  if (!confirm('ລຶບວຽກນີ້?')) return;
+  const t = db.tasks.find(x=>x.id===id);
+  db.tasks = db.tasks.filter(t=>t.id!==id);
+  if (t) addActivity(`ລຶບວຽກ "${t.name}"`, t.team);
+  saveDB(); notify('ລຶບວຽກສຳເລັດ');
+  updateBadges(); renderTasks(); renderDashboard(); renderKanban();
+}
+
+function changeStatus(id, status) {
+  if (!currentUser.canEdit) return;
+  const t = db.tasks.find(t=>t.id===id);
+  if (t) { t.status=status; addActivity(`"${t.name}" → ${STATUS[status].label}`, t.team); }
+  saveDB(); updateBadges(); renderTasks(); renderKanban(); renderDashboard();
+}
+
+// ══════════════════════════════════════════════════════
+// MEMBER
+// ══════════════════════════════════════════════════════
+let editingMemberId = null;
+function openAddMember() {
+  if (!currentUser.canEdit) return;
+  editingMemberId = null;
+  document.getElementById('modal-member-title').textContent = 'ເພີ່ມສະມາຊິກ';
+  document.getElementById('member-save-btn').textContent = 'ບັນທຶກ';
+  ['m-name','m-role','m-phone','m-pw'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('m-team').value = Object.keys(TEAM_CONFIG)[0];
+  openModal('modal-member');
+}
+function openEditMember(id) {
+  if (!currentUser.canEdit) return;
+  const m = db.members.find(x=>x.id===id);
+  if (!m) return;
+  editingMemberId = id;
+  document.getElementById('modal-member-title').textContent = 'ແກ້ໄຂສະມາຊິກ';
+  document.getElementById('member-save-btn').textContent = 'ອັບເດດ';
+  document.getElementById('m-name').value = m.name;
+  document.getElementById('m-role').value = m.role||'';
+  document.getElementById('m-team').value = m.team;
+  document.getElementById('m-phone').value = m.phone||'';
+  document.getElementById('m-pw').value = '';
+  openModal('modal-member');
+}
+function addMember() {
+  const name = document.getElementById('m-name').value.trim();
+  if (!name) { alert('ກະລຸນາໃສ່ຊື່'); return; }
+  const team = document.getElementById('m-team').value;
+  const data = { name, role:document.getElementById('m-role').value, team, phone:document.getElementById('m-phone').value };
+  if (editingMemberId !== null) {
+    const m = db.members.find(x=>x.id===editingMemberId);
+    if (m) { Object.assign(m, data); addActivity(`ແກ້ໄຂ "${name}"`, team); notify('ອັບເດດສຳເລັດ'); }
+    editingMemberId = null;
+  } else {
+    db.members.push({ id:genId(), joined:new Date().toISOString(), ...data });
+    addActivity(`ເພີ່ມສະມາຊິກ "${name}"`, team);
+    notify('ເພີ່ມສະມາຊິກສຳເລັດ');
+  }
+  saveDB(); closeModal('modal-member'); updateBadges(); renderDashboard();
+  Object.keys(TEAM_CONFIG).forEach(k => { const s=document.getElementById('sec-team-'+k); if(s&&s.classList.contains('active')) renderTeamPage(k); });
+}
+function deleteMember(id) {
+  if (!currentUser.canEdit || !confirm('ລຶບສະມາຊິກ?')) return;
+  db.members = db.members.filter(m=>m.id!==id);
+  saveDB(); updateBadges(); renderDashboard();
+  Object.keys(TEAM_CONFIG).forEach(k => { const s=document.getElementById('sec-team-'+k); if(s&&s.classList.contains('active')) renderTeamPage(k); });
+}
+
+// ══════════════════════════════════════════════════════
+// BOOTH
+// ══════════════════════════════════════════════════════
+let editingBoothId = null;
+function openBoothModal(id) {
+  if (!currentUser.canEdit) return;
+  editingBoothId = id || null;
+  if (id) {
+    const b = db.booths.find(x=>x.id===id);
+    if (!b) return;
+    document.getElementById('modal-booth-title').textContent = 'ແກ້ໄຂງານບູດ';
+    document.getElementById('booth-save-btn').textContent = 'ອັບເດດ';
+    document.getElementById('b-name').value = b.name;
+    document.getElementById('b-loc').value = b.loc||'';
+    document.getElementById('b-assignee').value = b.assignee||'';
+    document.getElementById('b-date-start').value = b.dateStart||b.date||'';
+    document.getElementById('b-date-end').value = b.dateEnd||'';
+    document.getElementById('b-budget').value = b.budget||'';
+    document.getElementById('b-visitors').value = b.visitors||0;
+    document.getElementById('b-leads').value = b.leads||0;
+    document.getElementById('b-status').value = b.status||'upcoming';
+    document.getElementById('b-link').value = b.link||'';
+    document.getElementById('b-note').value = b.note||'';
+  } else {
+    document.getElementById('modal-booth-title').textContent = 'ເພີ່ມງານບູດ';
+    document.getElementById('booth-save-btn').textContent = 'ບັນທຶກ';
+    ['b-name','b-loc','b-assignee','b-date-start','b-date-end','b-budget','b-link','b-note'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('b-visitors').value='0';
+    document.getElementById('b-leads').value='0';
+    document.getElementById('b-status').value='upcoming';
+  }
+  openModal('modal-booth');
+}
+function addBooth() {
+  const name = document.getElementById('b-name').value.trim();
+  if (!name) { alert('ກະລຸນາໃສ່ຊື່ງານ'); return; }
+  const data = {
+    name, loc:document.getElementById('b-loc').value,
+    assignee:document.getElementById('b-assignee').value,
+    dateStart:document.getElementById('b-date-start').value,
+    dateEnd:document.getElementById('b-date-end').value,
+    budget:document.getElementById('b-budget').value,
+    visitors:parseInt(document.getElementById('b-visitors').value)||0,
+    leads:parseInt(document.getElementById('b-leads').value)||0,
+    status:document.getElementById('b-status').value,
+    link:document.getElementById('b-link').value,
+    note:document.getElementById('b-note').value,
+    team:'booth'
+  };
+  if (editingBoothId) {
+    const b = db.booths.find(x=>x.id===editingBoothId);
+    if (b) { Object.assign(b, data); addActivity(`ແກ້ໄຂງານ "${name}"`, 'booth'); notify('ອັບເດດສຳເລັດ'); }
+    editingBoothId = null;
+  } else {
+    db.booths.push({ id:genId(), created:new Date().toISOString(), ...data });
+    addActivity(`ເພີ່ມງານ "${name}"`, 'booth');
+    notify('ເພີ່ມງານສຳເລັດ');
+  }
+  saveDB(); closeModal('modal-booth'); renderBooth();
+}
+function deleteBooth(id) {
+  if (!currentUser.canEdit || !confirm('ລຶບ?')) return;
+  db.booths = db.booths.filter(b=>b.id!==id);
+  saveDB(); renderBooth();
+}
+
+// ══════════════════════════════════════════════════════
+// ANALYTIC
+// ══════════════════════════════════════════════════════
+function addAnalytic() {
+  db.analytics.push({ id:genId(), source:document.getElementById('an-source').value, team:document.getElementById('an-team').value, reach:parseInt(document.getElementById('an-reach-in').value)||0, engage:parseInt(document.getElementById('an-engage-in').value)||0, clicks:parseInt(document.getElementById('an-clicks-in').value)||0, conv:parseInt(document.getElementById('an-conv-in').value)||0, date:document.getElementById('an-date-in').value, created:new Date().toISOString() });
+  addActivity('ເພີ່ມຂໍ້ມູນວິເຄາະ', document.getElementById('an-team').value);
+  saveDB(); closeModal('modal-analytic');
+  ['an-reach-in','an-engage-in','an-clicks-in','an-conv-in'].forEach(id=>document.getElementById(id).value='');
+  notify('ບັນທຶກສຳເລັດ'); renderAnalytics();
+}
+function deleteAnalytic(id) {
+  if (!currentUser.canEdit || !confirm('ລຶບ?')) return;
+  db.analytics = db.analytics.filter(a=>a.id!==id);
+  saveDB(); renderAnalytics();
+}
+
+// ══════════════════════════════════════════════════════
+// UPDATE BADGES
+// ══════════════════════════════════════════════════════
+function updateBadges() {
+  const pending = db.tasks.filter(t=>t.status!=='done').length;
+  const nb = document.getElementById('nb-pending');
+  if (nb) { nb.textContent=pending; nb.style.display=pending?'inline':'none'; }
+  Object.keys(TEAM_CONFIG).forEach(team => {
+    const cnt = db.tasks.filter(t=>t.team===team&&t.status!=='done').length;
+    const el = document.getElementById('nb-'+team);
+    if (el) { el.textContent=cnt; el.style.display=cnt?'inline':'none'; }
+  });
+}
+
+// ══════════════════════════════════════════════════════
+// RENDER DASHBOARD
+// ══════════════════════════════════════════════════════
+function renderDashboard() {
+  const total=db.tasks.length, done=db.tasks.filter(t=>t.status==='done').length, prog=db.tasks.filter(t=>t.status==='inprogress').length;
+  document.getElementById('dm-total').textContent=total;
+  document.getElementById('dm-done').textContent=done;
+  document.getElementById('dm-prog').textContent=prog;
+  document.getElementById('dm-done-pct').textContent=total?Math.round(done/total*100)+'%':'0%';
+  document.getElementById('dm-members').textContent=db.members.length;
+
+  // Team progress
+  document.getElementById('team-progress-list').innerHTML=Object.entries(TEAM_CONFIG).map(([k,t])=>{
+    const tt=db.tasks.filter(x=>x.team===k), td=tt.filter(x=>x.status==='done').length, pct=tt.length?Math.round(td/tt.length*100):0;
+    return `<div style="margin-bottom:12px"><div class="flex items-center justify-between" style="margin-bottom:5px"><span class="team-tag ${t.cls}" style="font-size:11px;padding:2px 8px">${t.label}</span><span class="text-xs text-muted font-mono">${td}/${tt.length} · ${pct}%</span></div><div class="progress-wrap"><div class="progress-fill" style="width:${pct}%;background:${t.color}"></div></div></div>`;
+  }).join('');
+
+  // Urgent
+  const now=new Date(), urgent=db.tasks.filter(t=>t.status!=='done'&&(t.priority==='urgent'||t.priority==='high'||(t.due&&new Date(t.due)<=new Date(now.getTime()+3*86400000)))).slice(0,6);
+  const utEl=document.getElementById('urgent-tasks');
+  if (!urgent.length) { utEl.innerHTML='<div class="empty-state"><div class="empty-state-icon">🎉</div><div class="empty-state-text">ບໍ່ມີວຽກດ່ວນ</div></div>'; }
+  else utEl.innerHTML=urgent.map(t=>{
+    const tc=TEAM_CONFIG[t.team]||{cls:'team-other',label:'?'}, over=t.due&&new Date(t.due)<now;
+    return `<div class="task-card" onclick="openTaskDetail(${t.id})"><div class="task-card-header"><span class="task-title">${t.name}</span><span class="badge ${STATUS[t.status].cls}">${STATUS[t.status].label}</span></div><div class="task-meta"><span class="team-tag ${tc.cls}" style="font-size:10px;padding:1px 6px">${tc.label}</span>${t.due?`<span class="task-due ${over?'overdue':''}">${t.due}</span>`:''}<span style="font-size:11px;color:${PRIORITY[t.priority]?.color||'inherit'}">${PRIORITY[t.priority]?.label||''}</span></div></div>`;
+  }).join('');
+
+  // Bar chart
+  const barEl=document.getElementById('bar-chart-30days'), weeks=[];
+  for(let i=7;i>=0;i--){
+    const d=new Date(now.getTime()-i*7*86400000);
+    const cnt=db.tasks.filter(t=>{const c=new Date(t.created);return c>=new Date(d.getTime()-7*86400000)&&c<=d;}).length;
+    weeks.push({label:(d.getMonth()+1)+'/'+(d.getDate()),cnt});
+  }
+  const maxW=Math.max(...weeks.map(w=>w.cnt),1);
+  barEl.innerHTML=weeks.map(w=>`<div class="bar-col"><div class="bar-val">${w.cnt||''}</div><div class="bar-fill" style="height:${Math.round(w.cnt/maxW*90)}px;background:var(--accent)"></div><div class="bar-label">${w.label}</div></div>`).join('');
+
+  // Activity
+  const actEl=document.getElementById('dash-activity');
+  if (!db.activity.length) { actEl.innerHTML='<div class="empty-state" style="padding:20px"><div class="empty-state-text">ຍັງບໍ່ມີ activity</div></div>'; }
+  else actEl.innerHTML=db.activity.slice(0,10).map(a=>{
+    const tc=TEAM_CONFIG[a.team];
+    return `<div class="timeline-item"><div class="timeline-left"><div class="timeline-dot" style="background:${tc?.color||'var(--accent)'}"></div></div><div class="timeline-content"><div class="timeline-title">${a.msg}</div><div class="timeline-time">${new Date(a.time).toLocaleString('lo-LA')}</div></div></div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════════
+// RENDER KANBAN
+// ══════════════════════════════════════════════════════
+function renderKanban() {
+  const ft=document.getElementById('kanban-filter-team')?.value||'';
+  const tasks=ft?db.tasks.filter(t=>t.team===ft):db.tasks;
+  const cols=['todo','inprogress','review','done'];
+  const colColors={todo:'var(--text3)',inprogress:'var(--accent)',review:'var(--purple)',done:'var(--green)'};
+  document.getElementById('kanban-board').innerHTML=cols.map(s=>{
+    const ct=tasks.filter(t=>t.status===s);
+    return `<div class="kanban-col"><div class="kanban-col-header"><span class="kanban-col-title" style="color:${colColors[s]}">${STATUS[s].label}</span><span class="kanban-count">${ct.length}</span></div>
+      ${ct.length?ct.map(t=>{const tc=TEAM_CONFIG[t.team]||{cls:'team-other',label:'?'};return `<div class="kanban-card" onclick="openTaskDetail(${t.id})"><div style="font-size:12px;font-weight:500;color:var(--text);margin-bottom:8px;line-height:1.4">${t.name}</div><div style="display:flex;align-items:center;justify-content:space-between"><span class="team-tag ${tc.cls}" style="font-size:10px;padding:1px 6px">${tc.label}</span>${t.due?`<span class="text-xs text-muted font-mono">${t.due}</span>`:''}</div>${currentUser.canEdit?`<div style="margin-top:8px;display:flex;gap:4px;flex-wrap:wrap">${cols.filter(x=>x!==s).map(x=>`<button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();changeStatus(${t.id},'${x}')" style="font-size:10px;padding:2px 6px">${STATUS[x].label}</button>`).join('')}<button class="btn btn-danger btn-sm" onclick="event.stopPropagation();deleteTask(${t.id})" style="margin-left:auto">✕</button></div>`:''}</div>`;}).join(''):'<div style="font-size:12px;color:var(--text3);text-align:center;padding:24px 0">ບໍ່ມີວຽກ</div>'}
+    </div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════════
+// RENDER TEAM PAGE
+// ══════════════════════════════════════════════════════
+function renderTeamPage(teamKey) {
+  const t=TEAM_CONFIG[teamKey]; if(!t) return;
+  const tasks=db.tasks.filter(x=>x.team===teamKey);
+  const members=db.members.filter(m=>m.team===teamKey);
+  const done=tasks.filter(x=>x.status==='done').length;
+  const el=document.getElementById('sec-team-'+teamKey);
+
+  const readonlyBanner = !currentUser.canEdit ?
+    `<div class="readonly-banner">👁 ທ່ານເຂົ້າໃນໂໝດ View Only — ສາມາດເບີ່ງລາຍລະອຽດໄດ້ ແຕ່ບໍ່ສາມາດແກ້ໄຂ</div>` : '';
+
+  el.innerHTML = `
+    ${readonlyBanner}
+    <div class="section-header flex items-center justify-between">
+      <div>
+        <div class="section-title" style="color:${t.color}">${t.label}</div>
+        <div class="section-desc">ວຽກ ${tasks.length} ລາຍການ · ສຳເລັດ ${done}/${tasks.length}</div>
+      </div>
+      ${currentUser.canEdit?`<div class="flex gap-8"><button class="btn btn-ghost btn-sm" onclick="openAddMember()">+ ສະມາຊິກ</button><button class="btn btn-primary" onclick="openAddTask('${teamKey}')">+ ວຽກ</button></div>`:''}
+    </div>
+    <div class="grid grid-3 mb-16">
+      <div class="metric-card mc-blue"><div class="metric-label">ວຽກທັງໝົດ</div><div class="metric-value">${tasks.length}</div></div>
+      <div class="metric-card mc-green"><div class="metric-label">ສຳເລັດ</div><div class="metric-value">${done}</div></div>
+      <div class="metric-card mc-purple"><div class="metric-label">ສະມາຊິກ</div><div class="metric-value">${members.length}</div></div>
+    </div>
+    <div class="grid grid-2 mb-16">
+      <div class="card">
+        <div class="card-header"><div class="card-title">ສະມາຊິກ</div></div>
+        ${members.length?members.map(m=>`<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)">
+          <div style="width:36px;height:36px;border-radius:50%;background:${t.color}22;color:${t.color};display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0">${m.name.charAt(0)}</div>
+          <div style="flex:1"><div style="font-weight:600;font-size:13px">${m.name}</div><div style="font-size:11px;color:var(--text2)">${m.role||'-'} ${m.phone?'· '+m.phone:''}</div></div>
+          ${currentUser.canEdit?`<div class="flex gap-4"><button class="btn btn-ghost btn-sm" onclick="openEditMember(${m.id})">✎</button><button class="btn btn-danger btn-sm" onclick="deleteMember(${m.id})">✕</button></div>`:''}
+        </div>`).join(''):'<div class="empty-state" style="padding:24px"><div class="empty-state-text">ຍັງບໍ່ມີສະມາຊິກ</div></div>'}
+      </div>
+      <div class="card">
+        <div class="card-title mb-16">ວຽກ Active</div>
+        ${tasks.filter(x=>x.status!=='done').slice(0,6).map(x=>`<div class="task-card" onclick="openTaskDetail(${x.id})"><div class="task-card-header"><span class="task-title">${x.name}</span><span class="badge ${STATUS[x.status].cls}">${STATUS[x.status].label}</span></div><div class="task-meta"><span class="text-xs text-muted">${x.assignee}</span>${x.due?`<span class="task-due ${new Date(x.due)<new Date()?'overdue':''}">${x.due}</span>`:''}</div></div>`).join('')||'<div class="empty-state" style="padding:16px"><div class="empty-state-text">ບໍ່ມີວຽກ active</div></div>'}
+      </div>
+    </div>
+    <div class="card" style="padding:0">
+      <div style="padding:14px 20px 10px;display:flex;align-items:center;justify-content:space-between"><div class="card-title">ທຸກວຽກ</div><span class="text-xs text-muted">ຄລິກທີ່ວຽກເພື່ອເບີ່ງລາຍລະອຽດ</span></div>
+      <table class="data-table">
+        <thead><tr><th>ຊື່ວຽກ</th><th>ຮັບຜິດຊອບ</th><th>ສະຖານະ</th><th>Priority</th><th>ກຳໜົດ</th><th>ປະເພດ</th><th>ການດຳເນີນ</th></tr></thead>
+        <tbody>${tasks.length?tasks.map(x=>`<tr>
+          <td class="td-name" onclick="openTaskDetail(${x.id})" style="cursor:pointer">${x.name}${x.desc?`<div style="font-size:11px;color:var(--text3);margin-top:2px">${x.desc.substring(0,50)}${x.desc.length>50?'...':''}</div>`:''}</td>
+          <td>${x.assignee}</td>
+          <td><span class="badge ${STATUS[x.status]?.cls||''}">${STATUS[x.status]?.label||x.status}</span></td>
+          <td style="color:${PRIORITY[x.priority]?.color||'inherit'}">${PRIORITY[x.priority]?.label||''}</td>
+          <td class="font-mono" style="font-size:12px;${x.due&&new Date(x.due)<new Date()?'color:var(--red)':''}">${x.due||'-'}</td>
+          <td style="font-size:11px;color:var(--text2)">${x.type||'-'}</td>
+          <td>
+            <div class="flex gap-4">
+              <button class="btn btn-ghost btn-sm" onclick="openTaskDetail(${x.id})" title="ເບີ່ງລາຍລະອຽດ">👁</button>
+              <button class="btn btn-success btn-sm" onclick="downloadSingleTask(${x.id})" title="ດາວໂຫຼດ">⬇</button>
+              ${currentUser.canEdit?`<button class="btn btn-ghost btn-sm" onclick="openEditTask(${x.id})">✎</button><button class="btn btn-danger btn-sm" onclick="deleteTask(${x.id})">✕</button>`:''}
+            </div>
+          </td>
+        </tr>`).join(''):`<tr><td colspan="7" style="text-align:center;color:var(--text3);padding:32px">ຍັງບໍ່ມີວຽກ</td></tr>`}</tbody>
+      </table>
+    </div>`;
+}
+
+// ══════════════════════════════════════════════════════
+// RENDER ALL TASKS
+// ══════════════════════════════════════════════════════
+function renderTasks() {
+  const ft=document.getElementById('filter-team')?.value||'';
+  const fs=document.getElementById('filter-status')?.value||'';
+  const fq=(document.getElementById('filter-search')?.value||'').toLowerCase();
+  const tasks=db.tasks.filter(t=>(!ft||t.team===ft)&&(!fs||t.status===fs)&&(!fq||(t.name||'').toLowerCase().includes(fq)||(t.assignee||'').toLowerCase().includes(fq)));
+  const tbody=document.getElementById('tasks-tbody');
+  if (!tasks.length) { tbody.innerHTML=`<tr><td colspan="7" style="text-align:center;color:var(--text3);padding:40px">ບໍ່ພົບຂໍ້ມູນ</td></tr>`; return; }
+  tbody.innerHTML=tasks.map(t=>{
+    const tc=TEAM_CONFIG[t.team]||{cls:'team-other',label:'?'};
+    return `<tr>
+      <td class="td-name" onclick="openTaskDetail(${t.id})" style="cursor:pointer">${t.name}<div style="font-size:11px;color:var(--text3)">${t.type||''}</div></td>
+      <td><span class="team-tag ${tc.cls}">${tc.label}</span></td>
+      <td>${t.assignee}</td>
+      <td>${currentUser.canEdit?`<select class="form-select" style="padding:4px 8px;width:auto;font-size:12px" onchange="changeStatus(${t.id},this.value)">${Object.entries(STATUS).map(([k,v])=>`<option value="${k}" ${t.status===k?'selected':''}>${v.label}</option>`).join('')}</select>`:`<span class="badge ${STATUS[t.status]?.cls||''}">${STATUS[t.status]?.label||t.status}</span>`}</td>
+      <td class="font-mono" style="font-size:12px;${t.due&&new Date(t.due)<new Date()?'color:var(--red)':''}">${t.due||'-'}</td>
+      <td style="color:${PRIORITY[t.priority]?.color||'inherit'};font-size:12px">${PRIORITY[t.priority]?.label||''}</td>
+      <td><div class="flex gap-4">
+        <button class="btn btn-ghost btn-sm" onclick="openTaskDetail(${t.id})" title="ລາຍລະອຽດ">👁</button>
+        <button class="btn btn-success btn-sm" onclick="downloadSingleTask(${t.id})" title="ດາວໂຫຼດ">⬇</button>
+        ${currentUser.canEdit?`<button class="btn btn-ghost btn-sm" onclick="openEditTask(${t.id})">✎</button><button class="btn btn-danger btn-sm" onclick="deleteTask(${t.id})">✕</button>`:''}
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════════
+// RENDER BOOTH
+// ══════════════════════════════════════════════════════
+function renderBooth() {
+  document.getElementById('booth-total').textContent=db.booths.length;
+  document.getElementById('booth-visitors').textContent=db.booths.reduce((s,b)=>s+(b.visitors||0),0).toLocaleString();
+  document.getElementById('booth-leads').textContent=db.booths.reduce((s,b)=>s+(b.leads||0),0).toLocaleString();
+  const tbody=document.getElementById('booth-tbody');
+  if (!db.booths.length) { tbody.innerHTML=`<tr><td colspan="10" style="text-align:center;color:var(--text3);padding:40px">ຍັງບໍ່ມີຂໍ້ມູນ</td></tr>`; return; }
+  tbody.innerHTML=db.booths.map(b=>{
+    const st=BOOTH_STATUS[b.status]||BOOTH_STATUS.upcoming;
+    const dateStr=b.dateStart?b.dateStart+(b.dateEnd?' → '+b.dateEnd:''):(b.date||'-');
+    const budget=b.budget?parseInt(b.budget).toLocaleString()+' ₭':'-';
+    return `<tr>
+      <td class="td-name">${b.name}${b.note?`<div style="font-size:11px;color:var(--text3)">${b.note.substring(0,40)}</div>`:''}</td>
+      <td>${b.loc||'-'}</td>
+      <td class="font-mono" style="font-size:12px">${dateStr}</td>
+      <td><span class="team-tag team-booth">ອອກບູດ</span></td>
+      <td>${b.assignee||'-'}</td>
+      <td class="font-mono" style="font-size:12px">${budget}</td>
+      <td class="font-mono">${(b.visitors||0).toLocaleString()}</td>
+      <td class="font-mono">${(b.leads||0).toLocaleString()}</td>
+      <td><span class="badge ${st.cls}">${st.label}</span></td>
+      <td><div class="flex gap-4">
+        ${b.link?`<a href="${b.link}" target="_blank" class="btn btn-ghost btn-sm">🔗</a>`:''}
+        ${currentUser.canEdit?`<button class="btn btn-ghost btn-sm" onclick="openBoothModal(${b.id})">✎</button><button class="btn btn-danger btn-sm" onclick="deleteBooth(${b.id})">✕</button>`:''}
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════════
+// RENDER ANALYTICS
+// ══════════════════════════════════════════════════════
+function renderAnalytics() {
+  document.getElementById('an-reach').textContent=db.analytics.reduce((s,a)=>s+a.reach,0).toLocaleString();
+  document.getElementById('an-engage').textContent=db.analytics.reduce((s,a)=>s+a.engage,0).toLocaleString();
+  document.getElementById('an-clicks').textContent=db.analytics.reduce((s,a)=>s+a.clicks,0).toLocaleString();
+  document.getElementById('an-conv').textContent=db.analytics.reduce((s,a)=>s+a.conv,0).toLocaleString();
+  const tbody=document.getElementById('analytic-tbody');
+  if (!db.analytics.length) { tbody.innerHTML=`<tr><td colspan="8" style="text-align:center;color:var(--text3);padding:40px">ຍັງບໍ່ມີຂໍ້ມູນ</td></tr>`; return; }
+  tbody.innerHTML=db.analytics.map(a=>{
+    const tc=TEAM_CONFIG[a.team]||{cls:'team-other',label:a.team};
+    return `<tr>
+      <td class="td-name">${a.source}</td>
+      <td class="font-mono">${a.reach.toLocaleString()}</td>
+      <td class="font-mono">${a.engage.toLocaleString()}</td>
+      <td class="font-mono">${a.clicks.toLocaleString()}</td>
+      <td class="font-mono">${a.conv.toLocaleString()}</td>
+      <td class="font-mono" style="font-size:12px">${a.date||'-'}</td>
+      <td><span class="team-tag ${tc.cls}">${tc.label}</span></td>
+      <td>${currentUser.canEdit?`<button class="btn btn-danger btn-sm" onclick="deleteAnalytic(${a.id})">✕</button>`:''}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════════
+// RENDER FULL ACTIVITY
+// ══════════════════════════════════════════════════════
+function renderFullActivity() {
+  const el=document.getElementById('full-activity');
+  if (!db.activity.length) { el.innerHTML='<div class="empty-state"><div class="empty-state-icon">📋</div><div class="empty-state-text">ຍັງບໍ່ມີ activity</div></div>'; return; }
+  el.innerHTML=db.activity.map(a=>{
+    const tc=TEAM_CONFIG[a.team];
+    return `<div class="timeline-item"><div class="timeline-left"><div class="timeline-dot" style="background:${tc?.color||'var(--accent)'}"></div></div><div class="timeline-content"><div class="timeline-title">${a.msg} <span class="team-tag ${tc?.cls||'team-other'}" style="font-size:10px;padding:1px 6px">${tc?.label||a.team}</span></div><div class="timeline-time">${new Date(a.time).toLocaleString('lo-LA')}</div></div></div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════════════════
+// REPORT
+// ══════════════════════════════════════════════════════
+function buildReport() {
+  const title=document.getElementById('r-title').value||'ລາຍງານການຕະຫຼາດ';
+  const from=document.getElementById('r-from').value, to=document.getElementById('r-to').value;
+  const inc={tasks:document.getElementById('r-c-tasks').checked,booth:document.getElementById('r-c-booth').checked,analytics:document.getElementById('r-c-analytics').checked,members:document.getElementById('r-c-members').checked};
+  const lines=[title,'='.repeat(50),'',`ວັນທີສ້າງ: ${new Date().toLocaleString('lo-LA')}`];
+  if(from||to) lines.push(`ໄລຍະ: ${from||'?'} ຫາ ${to||'?'}`);
+  lines.push('','ສະຫຼຸບ','─'.repeat(30));
+  lines.push(`ວຽກທັງໝົດ: ${db.tasks.length}`,`ສຳເລັດ: ${db.tasks.filter(t=>t.status==='done').length}`,`ສະມາຊິກ: ${db.members.length}`,`ງານບູດ: ${db.booths.length}`,'');
+  if(inc.members&&db.members.length){lines.push('ສະມາຊິກ','─'.repeat(30));Object.entries(TEAM_CONFIG).forEach(([k,t])=>{const m=db.members.filter(x=>x.team===k);if(m.length){lines.push(`[${t.label}]`);m.forEach((x,i)=>lines.push(`  ${i+1}. ${x.name} · ${x.role||'-'}`));}});lines.push('');}
+  if(inc.tasks&&db.tasks.length){lines.push('ວຽກ','─'.repeat(30));db.tasks.forEach((t,i)=>lines.push(`${i+1}. [${TEAM_CONFIG[t.team]?.label||t.team}] ${t.name} | ${STATUS[t.status]?.label} | ${t.assignee} | ${t.due||'-'}`));lines.push('');}
+  if(inc.booth&&db.booths.length){lines.push('ການອອກບູດ','─'.repeat(30));db.booths.forEach((b,i)=>lines.push(`${i+1}. ${b.name} | ${b.loc||'-'} | ${b.dateStart||b.date||'-'} | ຜູ້ຊົມ:${b.visitors} | ລີດ:${b.leads} | ງົບ:${b.budget||'-'}`));lines.push('');}
+  if(inc.analytics&&db.analytics.length){lines.push('ວິເຄາະ','─'.repeat(30));db.analytics.forEach((a,i)=>lines.push(`${i+1}. [${a.source}] Reach:${a.reach} Engage:${a.engage} Clicks:${a.clicks} Conv:${a.conv}`));}
+  return lines.join('\n');
+}
+function generateReport(){document.getElementById('report-output').textContent=buildReport();}
+function downloadTXT(){const blob=new Blob([buildReport()],{type:'text/plain;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(document.getElementById('r-title').value||'report')+'.txt';a.click();}
+function downloadCSV(){
+  const rows=[['ປະເພດ','ທີມ','ຊື່','ລາຍລະອຽດ','ສະຖານະ','ວັນທີ','ຜູ້ຮັບຜິດຊອບ']];
+  db.tasks.forEach(t=>rows.push(['ວຽກ',TEAM_CONFIG[t.team]?.label||t.team,t.name,t.desc||'',STATUS[t.status]?.label||'',t.due||'',t.assignee]));
+  db.booths.forEach(b=>rows.push(['ບູດ','ອອກບູດ',b.name,b.note||'',BOOTH_STATUS[b.status]?.label||'',b.dateStart||'',b.assignee||'']));
+  db.analytics.forEach(a=>rows.push(['ວິເຄາະ',TEAM_CONFIG[a.team]?.label||a.team,a.source,`Reach:${a.reach} Engage:${a.engage}`,'',a.date||'','']));
+  const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const blob=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(document.getElementById('r-title').value||'report')+'.csv';a.click();
+}
+
+// ══════════════════════════════════════════════════════
+// DATA MANAGEMENT (Export/Import)
+// ══════════════════════════════════════════════════════
+let pendingImportData=null, importMode='merge', exportPeriod='all';
+function openDataModal(){
+  const bar=document.getElementById('dm-stats-bar');
+  bar.innerHTML=[{icon:'📋',label:'ວຽກ',val:db.tasks.length},{icon:'👥',label:'ສະມາຊິກ',val:db.members.length},{icon:'🏪',label:'ບູດ',val:db.booths.length},{icon:'📊',label:'Analytics',val:db.analytics.length}].map(s=>`<div style="text-align:center"><div style="font-size:18px">${s.icon}</div><div style="font-size:20px;font-weight:700;font-family:var(--font-mono);color:var(--text)">${s.val}</div><div style="font-size:10px;color:var(--text2)">${s.label}</div></div>`).join('');
+  cancelImport(); exportPeriod='all';
+  document.querySelectorAll('.period-btn').forEach(b=>b.classList.remove('per-active'));
+  document.querySelector('.period-btn')?.classList.add('per-active');
+  document.getElementById('custom-range').style.display='none';
+  updateExportPreview(); openModal('modal-data');
+}
+function setPeriod(p,btn){exportPeriod=p;document.querySelectorAll('.period-btn').forEach(b=>b.classList.remove('per-active'));btn.classList.add('per-active');document.getElementById('custom-range').style.display=p==='custom'?'block':'none';updateExportPreview();}
+function getDateRange(){const now=new Date();const s=d=>{const x=new Date(d);x.setHours(0,0,0,0);return x;},e=d=>{const x=new Date(d);x.setHours(23,59,59,999);return x;};switch(exportPeriod){case 'all':return{from:null,to:null};case 'today':return{from:s(now),to:e(now)};case 'week':{const w=new Date(now);w.setDate(w.getDate()-6);return{from:s(w),to:e(now)};}case 'month':{const m=new Date(now);m.setDate(m.getDate()-29);return{from:s(m),to:e(now)};}case 'thismonth':return{from:s(new Date(now.getFullYear(),now.getMonth(),1)),to:e(now)};case 'custom':{const fv=document.getElementById('export-from')?.value,tv=document.getElementById('export-to')?.value;return{from:fv?s(new Date(fv)):null,to:tv?e(new Date(tv)):null};}default:return{from:null,to:null};}}
+function filterByRange(items,df){const{from,to}=getDateRange();if(!from&&!to)return items;return items.filter(x=>{const d=new Date(x[df]||x.created||0);if(from&&d<from)return false;if(to&&d>to)return false;return true;});}
+function updateExportPreview(){const ft=filterByRange(db.tasks,'created'),fm=filterByRange(db.members,'joined'),fb=filterByRange(db.booths,'created'),fa=filterByRange(db.analytics,'created');document.getElementById('ec-tasks').textContent=ft.length;document.getElementById('ec-members').textContent=fm.length;document.getElementById('ec-booths').textContent=fb.length;document.getElementById('ec-analytics').textContent=fa.length;const{from,to}=getDateRange();document.getElementById('export-period-label').textContent=from?`📅 ${from.toLocaleDateString('lo-LA')} — ${to?.toLocaleDateString('lo-LA')||''}`: '📅 ທັງໝົດ';}
+function exportFullDB(){const ft=filterByRange(db.tasks,'created'),fm=filterByRange(db.members,'joined'),fb=filterByRange(db.booths,'created'),fa=filterByRange(db.analytics,'created'),fac=filterByRange(db.activity,'time');const payload={version:'3.0',type:'full-db',exported:new Date().toISOString(),data:{tasks:ft,members:fm,booths:fb,analytics:fa,activity:fac.slice(0,50)}};downloadFile(JSON.stringify(payload,null,2),`sabaidee-db-${exportPeriod}-${new Date().toISOString().slice(0,10)}.json`,'application/json');notify(`Export ${ft.length} ວຽກ ສຳເລັດ`);}
+function exportTasksOnly(){const ft=filterByRange(db.tasks,'created');downloadFile(JSON.stringify({version:'2.0',type:'tasks-only',exported:new Date().toISOString(),tasks:ft},null,2),`sabaidee-tasks-${new Date().toISOString().slice(0,10)}.json`,'application/json');notify(`Export ວຽກ ${ft.length} ລາຍການ`);}
+function setImportMode(mode,btn){importMode=mode;document.querySelectorAll('.import-mode-btn').forEach(b=>b.classList.remove('im-active'));btn.classList.add('im-active');}
+function downloadFile(content,filename,mime){const blob=new Blob([content],{type:mime});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),5000);}
+function importDBFile(input){readImportFile(input,'full-db');}
+function importTaskJSON(input){readImportFile(input,'tasks-only');}
+function readImportFile(input,et){const file=input.files[0];if(!file)return;const reader=new FileReader();reader.onload=function(e){try{const raw=JSON.parse(e.target.result);pendingImportData={raw,et};showImportPreview(raw,et);}catch(err){notify('ໄຟລ໌ JSON ບໍ່ຖືກຕ້ອງ','error');}input.value='';};reader.readAsText(file);}
+function showImportPreview(raw,et){const preview=document.getElementById('import-preview'),content=document.getElementById('import-preview-content');preview.style.display='block';const d=raw.data||raw;const tasks=Array.isArray(raw)?raw:(d.tasks||raw.tasks||[]);const lines=raw.type==='full-db'||raw.data?[`📦 Full DB | Export: ${raw.exported?new Date(raw.exported).toLocaleString('lo-LA'):'-'}`,`ວຽກ: ${(d.tasks||[]).length} | ສະມາຊິກ: ${(d.members||[]).length} | ບູດ: ${(d.booths||[]).length}`,`Mode: ${importMode==='merge'?'🔀 Merge':'🔄 Replace'}`]:[`📋 Tasks | ວຽກ: ${tasks.length}`,...tasks.slice(0,5).map((t,i)=>`  ${i+1}. ${t.name||'?'}`)];content.textContent=lines.join('\n');}
+function cancelImport(){pendingImportData=null;document.getElementById('import-preview').style.display='none';}
+function confirmImport(){if(!pendingImportData)return;const{raw}=pendingImportData;if(importMode==='replace'){const d=raw.data||raw;db.tasks=d.tasks||[];db.members=d.members||[];db.booths=d.booths||[];db.analytics=d.analytics||[];db.activity=d.activity||[];}else{const merge=(ex,inc)=>{if(!inc)return;const ids=new Set(ex.map(x=>String(x.id)));inc.forEach(x=>{if(!ids.has(String(x.id))){ex.push(x);ids.add(String(x.id));}});};const d=raw.data||raw;merge(db.tasks,d.tasks||Array.isArray(raw)?raw:null);merge(db.members,d.members);merge(db.booths,d.booths);merge(db.analytics,d.analytics);}addActivity('Import ຂໍ້ມູນ','other');saveDB();cancelImport();closeModal('modal-data');updateBadges();renderDashboard();notify('Import ສຳເລັດ');}
+
+// ══════════════════════════════════════════════════════
+// RESET
+// ══════════════════════════════════════════════════════
+function resetDB(){if(!confirm('ລຶບຂໍ້ມູນທັງໝົດ ແລ້ວໂຫຼດ demo?'))return;try{localStorage.removeItem(DB_KEY);}catch(e){}db={tasks:[],members:[],booths:[],analytics:[],activity:[]};loadDemoData();notify('ໂຫຼດ demo ສຳເລັດ');updateBadges();renderDashboard();}
+
+// ══════════════════════════════════════════════════════
+// DEMO DATA
+// ══════════════════════════════════════════════════════
+function loadDemoData(){
+  const demos=[
+    {name:'ຂຽນ Script TikTok ສິນຄ້າໃໝ່',team:'content',assignee:'ອານ',status:'inprogress',priority:'high',due:'2025-06-05',start:'2025-05-28',type:'TikTok',platform:'TikTok',desc:'ຂຽນ script ສຳລັບ TikTok ໂຄສະນາສິນຄ້າໃໝ່ ໂດຍເນັ້ນ Hook 3 ວິ ທຳອິດ ແລະ ຈົບດ້ວຍ CTA',note:'ຕ້ອງຢືນຢັນ Brand Guideline ກ່ອນ'},
+    {name:'ຕັດຕໍ່ VDO Highlight ງານ Lao ICT',team:'video',assignee:'ດ້ວງ',status:'todo',priority:'urgent',due:'2025-06-03',start:'2025-06-01',type:'Video Edit',platform:'YouTube',desc:'ຕັດຕໍ່ VDO Highlight ຂອງງານ Lao ICT Expo 2025 ຄວາມຍາວ 3-5 ນາທີ',note:'ໃຊ້ Footage ຈາກ Drive'},
+    {name:'ອອກແບບ Banner Ads Facebook',team:'design',assignee:'ແພງ',status:'review',priority:'normal',due:'2025-06-10',start:'2025-06-02',type:'Graphic Design',platform:'Facebook',desc:'ອອກແບບ Banner ສຳລັບ Facebook Ads ຂະໜາດ 1200x628 ແລະ 1080x1080',note:'ສ່ງ 3 ສະບັບ A/B'},
+    {name:'ຕັ້ງ Campaign Google Ads Q2',team:'ads',assignee:'ສົມ',status:'done',priority:'high',due:'2025-05-30',start:'2025-05-25',type:'Ads Campaign',platform:'Google Ads',desc:'ຕັ້ງ Campaign Google Search Ads ສຳລັບ Q2 Budget 5M ກີບ/ເດືອນ',note:''},
+    {name:'Reply ຄຳຖາມ Inbox Facebook',team:'admin',assignee:'ນ້ຳ',status:'inprogress',priority:'normal',due:'2025-06-01',start:'2025-05-30',type:'Post Facebook',platform:'Facebook',desc:'ຕອບ Inbox ທຸກຂໍ້ຄວາມທີ່ຍັງຄ້າງ ພາຍໃນ 24 ຊົ່ວໂມງ',note:''},
+    {name:'ຂຽນ Blog Post ກ່ຽວກັບ Product',team:'content',assignee:'ອານ',status:'todo',priority:'normal',due:'2025-06-15',start:'2025-06-10',type:'Blog',platform:'Website',desc:'ຂຽນ Blog Post ຄວາມຍາວ 800-1000 ຄຳ ກ່ຽວກັບ Product ໃໝ່',note:''},
+    {name:'Live ນຳສະເໜີ Product ໃໝ່',team:'content',assignee:'ອານ,ດ້ວງ',status:'todo',priority:'high',due:'2025-06-12',start:'2025-06-10',type:'Live Stream',platform:'Facebook',desc:'Live Streaming ນຳສະເໜີ Product ໃໝ່ ຄວາມຍາວ 1-2 ຊົ່ວໂມງ ມີ Giveaway',note:'ຕ້ອງຕ່ໍ Wifi ດີ'},
+  ];
+  demos.forEach(d=>db.tasks.push({id:genId(),created:new Date().toISOString(),...d}));
+  const memberDemos=[
+    {name:'ອານ ສີດາ',role:'Content Creator',team:'content',phone:'020 5555 1111'},
+    {name:'ດ້ວງ ວິໄລ',role:'Video Editor',team:'video',phone:'020 5555 2222'},
+    {name:'ແພງ ມາລາ',role:'Graphic Designer',team:'design',phone:'020 5555 3333'},
+    {name:'ສົມ ສີຫາ',role:'Ads Specialist',team:'ads',phone:'020 5555 4444'},
+    {name:'ນ້ຳ ຈັນທະ',role:'Community Manager',team:'admin',phone:'020 5555 5555'},
+  ];
+  memberDemos.forEach(m=>db.members.push({id:genId(),joined:new Date().toISOString(),...m}));
+  db.booths.push({id:genId(),name:'Lao ICT Expo 2025',loc:'ຄູ້ສາ ຮ  ວງໄ ',assignee:'ທີມ Admin',dateStart:'2025-06-15',dateEnd:'2025-06-18',budget:'8000000',visitors:1200,leads:85,status:'upcoming',link:'',note:'ຮູ່ 3x4 ຈອງແລ້ວ',team:'booth',created:new Date().toISOString()});
+  addActivity('ເລີ່ມລະບົບ Dashboard','admin');
+  saveDB();
+}
+
+// Build login UI
+buildLoginUI();
+</script>
+</body>
+</html>
